@@ -18,6 +18,8 @@
 #include <stdexcept> // out_of_range
 #include <utility>   // !=, <=, >, >=
 
+#define CHUNK_SIZE 10
+
 // -----
 // using
 // -----
@@ -26,6 +28,9 @@ using std::rel_ops::operator!=;
 using std::rel_ops::operator<=;
 using std::rel_ops::operator>;
 using std::rel_ops::operator>=;
+
+using std::cout;
+using std::endl;
 
 // -------
 // destroy
@@ -69,11 +74,15 @@ BI uninitialized_fill (A& a, BI b, BI e, const U& v) {
   try {
     while (b != e) {
       a.construct(&*b, v);
-      ++b;}}
+      ++b;
+    }
+  }
   catch (...) {
     destroy(a, p, b);
-    throw;}
-  return e;}
+    throw;
+  }
+  return e;
+}
 
 // -------
 // my_deque
@@ -130,10 +139,14 @@ class my_deque {
     // data
     // ----
 
-    allocator_type _a;
-    
+    //! Allocates data chunks
+    allocator_type _chunk_a;
 
-    // <your data>
+    //! Allocates chunk table entries (each of which points to a data chunk)
+    typename allocator_type::template rebind<T*>::other _table_a;
+
+    //! Handle for the chunk table
+    T** _table_p;
 
   private:
     // -----
@@ -546,7 +559,23 @@ class my_deque {
      * <your documentation>
      */
     explicit my_deque (size_type s, const_reference v = value_type(), const allocator_type& a = allocator_type()) {
-      // <your code>
+      cout << "my_deque constructor" << endl;
+
+      // Create chunk table
+      cout << "s: " << s << endl;
+      size_type num_chunks = s / CHUNK_SIZE;
+      cout << "num_chunks: " << num_chunks << endl;
+      _table_p = _table_a.allocate(num_chunks);
+      uninitialized_fill(_table_a, _table_p, _table_p + num_chunks, pointer());
+
+      // Allocate chunks and map them into the table
+      for (size_type i = 0; i < num_chunks; ++ i) {
+        cout << "allocating a chunk." << endl;
+        pointer _chunk_p = _chunk_a.allocate(CHUNK_SIZE);
+        uninitialized_fill(_chunk_a, _chunk_p, _chunk_p + CHUNK_SIZE, value_type());
+        _table_p[i] = _chunk_p;
+      }
+
       assert(valid());
     }
 

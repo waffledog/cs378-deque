@@ -117,6 +117,6 @@ TYPED_TEST(TestDeque, Size_1) {
 TYPED_TEST(TestDeque, Constructor_1) {
   typedef typename TestFixture::deque_type      deque_type;
 
-  deque_type x(50);
+  deque_type x(56);
   // TODO
 }
