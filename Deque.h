@@ -108,57 +108,6 @@ class my_deque {
     typedef typename allocator_type::const_reference const_reference;
 
   public:
-    // -----------
-    // operator ==
-    // -----------
-
-    /**
-     * <your documentation>
-     */
-    friend bool operator == (const my_deque& lhs, const my_deque& rhs) {
-      // <your code>
-      // you must use std::equal()
-      return true;
-    }
-
-    // ----------
-    // operator <
-    // ----------
-
-    /**
-     * <your documentation>
-     */
-    friend bool operator < (const my_deque& lhs, const my_deque& rhs) {
-      // <your code>
-      // you must use std::lexicographical_compare()
-      return true;
-    }
-
-  private:
-    // ----
-    // data
-    // ----
-
-    //! Allocates data chunks
-    allocator_type _chunk_a;
-
-    //! Allocates chunk table entries (each of which points to a data chunk)
-    typename allocator_type::template rebind<T*>::other _table_a;
-
-    //! Handle for the chunk table
-    T** _table_p;
-
-  private:
-    // -----
-    // valid
-    // -----
-
-    bool valid () const {
-      // <your code>
-      return true;
-    }
-
-  public:
     // --------
     // iterator
     // --------
@@ -169,11 +118,29 @@ class my_deque {
         // typedefs
         // --------
 
-        typedef std::bidirectional_iterator_tag   iterator_category;
+        typedef std::bidirectional_iterator_tag    iterator_category;
         typedef typename my_deque::value_type      value_type;
         typedef typename my_deque::difference_type difference_type;
         typedef typename my_deque::pointer         pointer;
         typedef typename my_deque::reference       reference;
+
+      private:
+        // ----
+        // data
+        // ----
+        my_deque<T, A>* _d;   //! Pointer to the deque over we're iterating 
+        size_type _table_idx; //! Indexing into chunk table
+        size_type _chunk_idx; //! Indexing into a chunk
+
+      private:
+        // -----
+        // valid
+        // -----
+
+        bool valid () const {
+          // <your code>
+          return true;
+        }
 
       public:
         // -----------
@@ -217,33 +184,25 @@ class my_deque {
           return lhs -= rhs;
         }
 
-      private:
-        // ----
-        // data
-        // ----
-
-        // <your data>
-
-      private:
-        // -----
-        // valid
-        // -----
-
-        bool valid () const {
-          // <your code>
-          return true;
-        }
-
       public:
         // -----------
         // constructor
         // -----------
 
         /**
+         * Default constructor
          * <your documentation>
          */
-        iterator (/* <your arguments> */) {
-          // <your code>
+        iterator () : _d(NULL), _table_idx(0), _chunk_idx(0) {}
+
+        /**
+         * <your documentation>
+         */
+        iterator (my_deque<T, A>* d, size_type table_idx, size_type chunk_idx) :
+          _d(d),
+          _table_idx(table_idx),
+          _chunk_idx(chunk_idx)
+        {
           assert(valid());
         }
 
@@ -367,6 +326,23 @@ class my_deque {
         typedef typename my_deque::const_pointer   pointer;
         typedef typename my_deque::const_reference reference;
 
+      private:
+        // ----
+        // data
+        // ----
+
+        // <your data>
+
+      private:
+        // -----
+        // valid
+        // -----
+
+        bool valid () const {
+          // <your code>
+          return true;
+        }
+
       public:
         // -----------
         // operator ==
@@ -407,23 +383,6 @@ class my_deque {
          */
         friend const_iterator operator - (const_iterator lhs, difference_type rhs) {
           return lhs -= rhs;
-        }
-
-      private:
-        // ----
-        // data
-        // ----
-
-        // <your data>
-
-      private:
-        // -----
-        // valid
-        // -----
-
-        bool valid () const {
-          // <your code>
-          return true;
         }
 
       public:
@@ -543,6 +502,61 @@ class my_deque {
     };
 
   public:
+    // -----------
+    // operator ==
+    // -----------
+
+    /**
+     * <your documentation>
+     */
+    friend bool operator == (const my_deque& lhs, const my_deque& rhs) {
+      // <your code>
+      // you must use std::equal()
+      return true;
+    }
+
+    // ----------
+    // operator <
+    // ----------
+
+    /**
+     * <your documentation>
+     */
+    friend bool operator < (const my_deque& lhs, const my_deque& rhs) {
+      // <your code>
+      // you must use std::lexicographical_compare()
+      return true;
+    }
+
+  private:
+    // ----
+    // data
+    // ----
+
+    //! Allocates data chunks
+    allocator_type _chunk_a;
+
+    //! Allocates chunk table entries (each of which points to a data chunk)
+    typename allocator_type::template rebind<T*>::other _table_a;
+
+    //! Handle for the chunk table
+    T** _table_p;
+
+    iterator _b; // Begining
+    iterator _e; // End
+    iterator _l; // Last element of last chunk. For capacity calculation.
+
+  private:
+    // -----
+    // valid
+    // -----
+
+    bool valid () const {
+      // <your code>
+      return true;
+    }
+
+  public:
     // ------------
     // constructors
     // ------------
@@ -551,18 +565,19 @@ class my_deque {
      * <your documentation>
      */
     explicit my_deque (const allocator_type& a = allocator_type()) {
-      // <your code>
+      my_deque(0, value_type(), a);
       assert(valid());
     }
 
     /**
      * <your documentation>
      */
-    explicit my_deque (size_type s, const_reference v = value_type(), const allocator_type& a = allocator_type()) {
-      cout << "my_deque constructor" << endl;
+    explicit my_deque (size_type s, const_reference v = value_type(), 
+                       const allocator_type& a = allocator_type()) {
+      cout << "Entering my_deque constructor" << endl;
+      cout << "s: " << s << endl;
 
       // Create chunk table
-      cout << "s: " << s << endl;
       size_type num_chunks = s / CHUNK_SIZE;
       cout << "num_chunks: " << num_chunks << endl;
       _table_p = _table_a.allocate(num_chunks);
@@ -570,11 +585,17 @@ class my_deque {
 
       // Allocate chunks and map them into the table
       for (size_type i = 0; i < num_chunks; ++ i) {
-        cout << "allocating a chunk." << endl;
+        cout << "allocating chunk " << i << endl;
         pointer _chunk_p = _chunk_a.allocate(CHUNK_SIZE);
-        uninitialized_fill(_chunk_a, _chunk_p, _chunk_p + CHUNK_SIZE, value_type());
+        uninitialized_fill(_chunk_a, _chunk_p, _chunk_p + CHUNK_SIZE, v);
         _table_p[i] = _chunk_p;
       }
+
+      // TODO: Set _b and _e properly to be some middle range of the entire allocation
+      _b = iterator(this, 0, 0);
+      _e = iterator(this, num_chunks - 1, CHUNK_SIZE);
+      _l = iterator(this, num_chunks - 1, CHUNK_SIZE -1);
+      
 
       assert(valid());
     }
