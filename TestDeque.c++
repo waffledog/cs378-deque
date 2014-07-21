@@ -24,13 +24,13 @@ Google Test Libraries:
     /usr/lib/libgtest_main.a
 
 To compile the test:
-    % g++-4.7 -fprofile-arcs -ftest-coverage -pedantic -std=c++11 -Wall Integer.c++ TestInteger.c++ -o TestInteger -lgtest -lgtest_main -lpthread
+    % g++-4.7 -fprofile-arcs -ftest-coverage -pedantic -std=c++11 -Wall TestDeque.c++ -o TestDeque -lgtest -lgtest_main -lpthread 
 
 To run the test:
-    % valgrind TestInteger
+    % valgrind TestDeque
 
 To obtain coverage of the test:
-    % gcov-4.7 -b Integer.c++ TestInteger.c++
+    % gcov-4.7 -b TestDeque.c++
 */
 
 // --------
@@ -52,57 +52,71 @@ To obtain coverage of the test:
 // TestDeque
 // ---------
 
+// Documentation for Typed Tests: 
+// https://code.google.com/p/googletest/wiki/AdvancedGuide#Typed_Tests
+
+// Define a test that inherits from the google test base class.
 template <typename D>
 struct TestDeque : testing::Test {
-    // --------
-    // typedefs
-    // --------
+  // --------
+  // typedefs
+  // --------
 
-    typedef          D                  deque_type;
-    typedef typename D::allocator_type  allocator_type;
-    typedef typename D::value_type      value_type;
-    typedef typename D::size_type       size_type;
-    typedef typename D::difference_type difference_type;
-    typedef typename D::pointer         pointer;
-    typedef typename D::const_pointer   const_pointer;
-    typedef typename D::reference       reference;
-    typedef typename D::const_reference const_reference;};
+  typedef          D                  deque_type;
+  typedef typename D::allocator_type  allocator_type;
+  typedef typename D::value_type      value_type;
+  typedef typename D::size_type       size_type;
+  typedef typename D::difference_type difference_type;
+  typedef typename D::pointer         pointer;
+  typedef typename D::const_pointer   const_pointer;
+  typedef typename D::reference       reference;
+  typedef typename D::const_reference const_reference;};
 
-typedef testing::Types<
-            std::deque<int>,
-            std::deque<double>,
-            my_deque<int>,
-            my_deque<double> >
+// Specify the types of deques for which all of our tests will be run.
+// Here we specify 4 deque types, so each test will get run 4 times.
+typedef testing::Types< std::deque<int>,
+                        std::deque<double>,
+                        my_deque<int>,
+                        my_deque<double> >
         my_types;
 
 TYPED_TEST_CASE(TestDeque, my_types);
 
-TYPED_TEST(TestDeque, Empty) {
-    typedef typename TestFixture::deque_type      deque_type;
-    typedef typename TestFixture::allocator_type  allocator_type;
-    typedef typename TestFixture::value_type      value_type;
-    typedef typename TestFixture::size_type       size_type;
-    typedef typename TestFixture::difference_type difference_type;
-    typedef typename TestFixture::pointer         pointer;
-    typedef typename TestFixture::const_pointer   const_pointer;
-    typedef typename TestFixture::reference       reference;
-    typedef typename TestFixture::const_reference const_reference;
+TYPED_TEST(TestDeque, Empty_1) {
+  typedef typename TestFixture::deque_type      deque_type;
+  typedef typename TestFixture::allocator_type  allocator_type;
+  typedef typename TestFixture::value_type      value_type;
+  typedef typename TestFixture::size_type       size_type;
+  typedef typename TestFixture::difference_type difference_type;
+  typedef typename TestFixture::pointer         pointer;
+  typedef typename TestFixture::const_pointer   const_pointer;
+  typedef typename TestFixture::reference       reference;
+  typedef typename TestFixture::const_reference const_reference;
 
-    deque_type x;
-    const bool b = x.empty();
-    ASSERT_TRUE(b);}
+  deque_type x;
+  const bool b = x.empty();
+  ASSERT_TRUE(b);
+}
 
-TYPED_TEST(TestDeque, Size) {
-    typedef typename TestFixture::deque_type      deque_type;
-    typedef typename TestFixture::allocator_type  allocator_type;
-    typedef typename TestFixture::value_type      value_type;
-    typedef typename TestFixture::size_type       size_type;
-    typedef typename TestFixture::difference_type difference_type;
-    typedef typename TestFixture::pointer         pointer;
-    typedef typename TestFixture::const_pointer   const_pointer;
-    typedef typename TestFixture::reference       reference;
-    typedef typename TestFixture::const_reference const_reference;
+TYPED_TEST(TestDeque, Size_1) {
+  typedef typename TestFixture::deque_type      deque_type;
+  typedef typename TestFixture::allocator_type  allocator_type;
+  typedef typename TestFixture::value_type      value_type;
+  typedef typename TestFixture::size_type       size_type;
+  typedef typename TestFixture::difference_type difference_type;
+  typedef typename TestFixture::pointer         pointer;
+  typedef typename TestFixture::const_pointer   const_pointer;
+  typedef typename TestFixture::reference       reference;
+  typedef typename TestFixture::const_reference const_reference;
 
-    deque_type x;
-    const size_type s = x.size();
-    ASSERT_EQ(0, s);}
+  deque_type x;
+  const size_type s = x.size();
+  ASSERT_EQ(0, s);
+}
+
+TYPED_TEST(TestDeque, Constructor_1) {
+  typedef typename TestFixture::deque_type      deque_type;
+
+  deque_type x(56);
+  // TODO
+}
