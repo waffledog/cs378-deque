@@ -128,9 +128,8 @@ class my_deque {
         // ----
         // data
         // ----
-        my_deque<T, A>* _d;   //! Pointer to the deque over we're iterating 
-        size_type _table_idx; //! Indexing into chunk table
-        size_type _chunk_idx; //! Indexing into a chunk
+        my_deque* _d;   //! Pointer to the deque over we're iterating 
+        size_type _idx; //! Indexing into chunk table
 
       private:
         // -----
@@ -193,15 +192,14 @@ class my_deque {
          * Default constructor
          * <your documentation>
          */
-        iterator () : _d(NULL), _table_idx(0), _chunk_idx(0) {}
+        iterator () : _d(NULL), _idx(0) {}
 
         /**
          * <your documentation>
          */
-        iterator (my_deque<T, A>* d, size_type table_idx, size_type chunk_idx) :
+        iterator (my_deque* d, size_type i) :
           _d(d),
-          _table_idx(table_idx),
-          _chunk_idx(chunk_idx)
+          _idx(i)
         {
           assert(valid());
         }
@@ -538,13 +536,17 @@ class my_deque {
 
     //! Allocates chunk table entries (each of which points to a data chunk)
     typename allocator_type::template rebind<T*>::other _table_a;
+    
+    T**       _table_p;     //! Handle for the chunk table
+    size_type _table_size;  //! Number of entries in the chunk table
+  
+    //! "Physical" begining
+    size_type _b_table_idx; 
+    size_type _b_chunk_idx;
 
-    //! Handle for the chunk table
-    T** _table_p;
-
-    iterator _b; // Begining
-    iterator _e; // End
-    iterator _l; // Last element of last chunk. For capacity calculation.
+    //! Virtual begining and end
+    iterator _b;            
+    iterator _e;            
 
   private:
     // -----
@@ -566,6 +568,7 @@ class my_deque {
      */
     explicit my_deque (const allocator_type& a = allocator_type()) {
       my_deque(0, value_type(), a);
+      _table_size = 0;
       assert(valid());
     }
 
@@ -578,24 +581,24 @@ class my_deque {
       cout << "s: " << s << endl;
 
       // Create chunk table
-      size_type num_chunks = s / CHUNK_SIZE;
-      cout << "num_chunks: " << num_chunks << endl;
-      _table_p = _table_a.allocate(num_chunks);
-      uninitialized_fill(_table_a, _table_p, _table_p + num_chunks, pointer());
+      _table_size = s / CHUNK_SIZE;
+      cout << "_table_size: " << _table_size << endl;
+      _table_p = _table_a.allocate(_table_size);
+      uninitialized_fill(_table_a, _table_p, _table_p + _table_size, pointer());
 
       // Allocate chunks and map them into the table
-      for (size_type i = 0; i < num_chunks; ++ i) {
+      for (size_type i = 0; i < _table_size; ++ i) {
         cout << "allocating chunk " << i << endl;
         pointer _chunk_p = _chunk_a.allocate(CHUNK_SIZE);
         uninitialized_fill(_chunk_a, _chunk_p, _chunk_p + CHUNK_SIZE, v);
         _table_p[i] = _chunk_p;
       }
 
-      // TODO: Set _b and _e properly to be some middle range of the entire allocation
-      _b = iterator(this, 0, 0);
-      _e = iterator(this, num_chunks - 1, CHUNK_SIZE);
-      _l = iterator(this, num_chunks - 1, CHUNK_SIZE -1);
-      
+      _b_table_idx = 0;
+      _b_chunk_idx = 0;
+
+      _b = iterator(this, 0);
+      _e = iterator(this, s);
 
       assert(valid());
     }
@@ -639,12 +642,26 @@ class my_deque {
 
     /**
      * <your documentation>
+     * @param index A virtual index into this deque
      */
     reference operator [] (size_type index) {
-      // <your code>
-      // dummy is just to be able to compile the skeleton, remove it
-      static value_type dummy;
-      return dummy;
+      cout << "subscript(" << index << ")" << endl;
+      size_type table_offset = index / CHUNK_SIZE;
+      size_type chunk_offset = index % CHUNK_SIZE;
+
+      cout << "table offset, chunk_offset: " << "(" << table_offset << ", " << chunk_offset << ")" << endl;
+
+      size_type table_idx = _b_table_idx + table_offset;
+      size_type chunk_idx = _b_chunk_idx + chunk_offset;
+
+      if (chunk_idx >= CHUNK_SIZE) {
+        chunk_idx %= CHUNK_SIZE;
+        ++table_idx;
+      }
+
+      cout << "table offset, chunk_offset: " << "(" << table_idx << ", " << chunk_idx << ")" << endl;
+
+      return _table_p[table_idx][chunk_idx]; 
     }
 
     /**
