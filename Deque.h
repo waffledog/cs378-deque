@@ -113,6 +113,7 @@ class my_deque {
     // --------
 
     class iterator {
+      friend class my_deque;
       public:
         // --------
         // typedefs
@@ -219,8 +220,9 @@ class my_deque {
         reference operator * () const {
           // <your code>
           // dummy is just to be able to compile the skeleton, remove it
-          static value_type dummy;
-          return dummy;
+          return (*_d)[_idx];
+          // static value_type dummy;
+          // return dummy;
         }
 
         // -----------
@@ -243,6 +245,7 @@ class my_deque {
          */
         iterator& operator ++ () {
           // <your code>
+          _idx++;
           assert(valid());
           return *this;
         }
@@ -252,7 +255,7 @@ class my_deque {
          */
         iterator operator ++ (int) {
           iterator x = *this;
-          ++(*this);
+          ++_idx;
           assert(valid());
           return x;
         }
@@ -266,6 +269,7 @@ class my_deque {
          */
         iterator& operator -- () {
           // <your code>
+          --_idx;
           assert(valid());
           return *this;
         }
@@ -275,7 +279,8 @@ class my_deque {
          */
         iterator operator -- (int) {
           iterator x = *this;
-          --(*this);
+          // --(*this);
+          --_idx;
           assert(valid());
           return x;
         }
@@ -546,7 +551,10 @@ class my_deque {
 
     //! Virtual begining and end
     iterator _b;            
-    iterator _e;            
+    iterator _e;
+    iterator _l;   
+
+      
 
   private:
     // -----
@@ -555,6 +563,7 @@ class my_deque {
 
     bool valid () const {
       // <your code>
+      return (!_b._idx && !_e._idx && !_l._idx) || ((_b._idx <= _e._idx) && (_e._idx <= _l._idx));
       return true;
     }
 
@@ -581,7 +590,7 @@ class my_deque {
       cout << "s: " << s << endl;
 
       // Create chunk table
-      _table_size = s / CHUNK_SIZE;
+      _table_size = (s / CHUNK_SIZE) + 1;
       cout << "_table_size: " << _table_size << endl;
       _table_p = _table_a.allocate(_table_size);
       uninitialized_fill(_table_a, _table_p, _table_p + _table_size, pointer());
@@ -599,6 +608,7 @@ class my_deque {
 
       _b = iterator(this, 0);
       _e = iterator(this, s);
+      _l = iterator(this, _table_size * CHUNK_SIZE);
 
       assert(valid());
     }
@@ -681,8 +691,11 @@ class my_deque {
     reference at (size_type index) {
       // <your code>
       // dummy is just to be able to compile the skeleton, remove it
-      static value_type dummy;
-      return dummy;
+      if(index >= size())
+        throw std::out_of_range("deque");
+      return (*this)[index];
+      // static value_type dummy;
+      // return dummy;
     }
 
     /**
@@ -722,7 +735,8 @@ class my_deque {
      */
     iterator begin () {
       // <your code>
-      return iterator(/* <your arguments> */);
+      // return iterator(/* <your arguments> */);
+      return _b;
     }
 
     /**
@@ -765,7 +779,8 @@ class my_deque {
      */
     iterator end () {
       // <your code>
-      return iterator(/* <your arguments> */);
+      // return iterator(/* <your arguments> */);
+      return _e;
     }
 
     /**
@@ -884,6 +899,8 @@ class my_deque {
      */
     size_type size () const {
       // <your code>
+      // TO DO: operator - for iterators
+      // return _e._idx - _b._idx;
       return 0;
     }
 
