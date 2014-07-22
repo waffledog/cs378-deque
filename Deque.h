@@ -151,8 +151,7 @@ class my_deque {
          * <your documentation>
          */
         friend bool operator == (const iterator& lhs, const iterator& rhs) {
-          // <your code>
-          return true;
+          return (lhs._d == rhs._d) && (lhs._idx == rhs._idx);
         }
 
         /**
