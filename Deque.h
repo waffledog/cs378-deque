@@ -293,7 +293,7 @@ class my_deque {
          * <your documentation>
          */
         iterator& operator += (difference_type d) {
-          // <your code>
+          _idx += d;
           assert(valid());
           return *this;
         }
@@ -306,7 +306,7 @@ class my_deque {
          * <your documentation>
          */
         iterator& operator -= (difference_type d) {
-          // <your code>
+          _idx -= d;
           assert(valid());
           return *this;
         }
