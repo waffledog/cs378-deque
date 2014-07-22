@@ -98,6 +98,22 @@ TYPED_TEST(TestDeque, Empty_1) {
   ASSERT_TRUE(b);
 }
 
+TYPED_TEST(TestDeque, Empty_2) {
+  typedef typename TestFixture::deque_type      deque_type;
+  typedef typename TestFixture::allocator_type  allocator_type;
+  typedef typename TestFixture::value_type      value_type;
+  typedef typename TestFixture::size_type       size_type;
+  typedef typename TestFixture::difference_type difference_type;
+  typedef typename TestFixture::pointer         pointer;
+  typedef typename TestFixture::const_pointer   const_pointer;
+  typedef typename TestFixture::reference       reference;
+  typedef typename TestFixture::const_reference const_reference;
+
+  deque_type x(27);
+  const bool b = x.empty();
+  ASSERT_FALSE(b);
+}
+
 TYPED_TEST(TestDeque, Size_1) {
   typedef typename TestFixture::deque_type      deque_type;
   typedef typename TestFixture::allocator_type  allocator_type;
@@ -112,6 +128,42 @@ TYPED_TEST(TestDeque, Size_1) {
   deque_type x;
   const size_type s = x.size();
   ASSERT_EQ(0, s);
+}
+
+TYPED_TEST(TestDeque, Size_2) {
+  typedef typename TestFixture::deque_type      deque_type;
+  typedef typename TestFixture::allocator_type  allocator_type;
+  typedef typename TestFixture::value_type      value_type;
+  typedef typename TestFixture::size_type       size_type;
+  typedef typename TestFixture::difference_type difference_type;
+  typedef typename TestFixture::pointer         pointer;
+  typedef typename TestFixture::const_pointer   const_pointer;
+  typedef typename TestFixture::reference       reference;
+  typedef typename TestFixture::const_reference const_reference;
+
+  deque_type x(32);
+  const size_type s = x.size();
+  ASSERT_EQ(32, s);
+}
+
+TYPED_TEST(TestDeque, Size_3) {
+  typedef typename TestFixture::deque_type      deque_type;
+  typedef typename TestFixture::allocator_type  allocator_type;
+  typedef typename TestFixture::value_type      value_type;
+  typedef typename TestFixture::size_type       size_type;
+  typedef typename TestFixture::difference_type difference_type;
+  typedef typename TestFixture::pointer         pointer;
+  typedef typename TestFixture::const_pointer   const_pointer;
+  typedef typename TestFixture::reference       reference;
+  typedef typename TestFixture::const_reference const_reference;
+
+  deque_type x;
+  for (int i = 0; i < 30; ++i) {
+    x.push_back(i);
+    x.push_front(i);
+  }
+  const size_type s = x.size();
+  ASSERT_EQ(60, s);
 }
 
 TYPED_TEST(TestDeque, Constructor_1) {
