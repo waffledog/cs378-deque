@@ -587,7 +587,9 @@ class my_deque {
       //cout << "s: " << s << endl;
 
       // Create chunk table
-      _table_size = (s / CHUNK_SIZE) + 1;
+      _table_size = (s / CHUNK_SIZE);
+      if((s % CHUNK_SIZE) != 0)
+        _table_size += 1;
       //cout << "_table_size: " << _table_size << endl;
       _table_p = _table_a.allocate(_table_size);
       uninitialized_fill(_table_a, _table_p, _table_p + _table_size, pointer());
@@ -864,14 +866,20 @@ class my_deque {
      * <your documentation>
      */
     void push_back (const_reference v) {
+      cout << "entering push_back" << endl;
+      cout << "_e: " << _e._idx << endl;
+      cout << "-l: " << _l._idx << endl;
       if(_e == _l) {
         cout << "expansion needed." << endl;
-        resize(size() + 1, v);
+        resize(size() + 1);
+        *(_e - 1) = v;
+        cout << "resized complete" << endl;
       }
       else {
         cout << "none" << endl;
-        _e++;
         *_e = v;
+        cout << "none1" << endl;
+        _e++;
       }
       assert(valid());
     }
@@ -894,31 +902,40 @@ class my_deque {
     void resize (size_type s, const_reference v = value_type()) {
       // <your code>
       // assert(valid());
-      cout << "size : " << s << " current size: " << s << endl;
+      cout << "size : " << s << " current size: " << size() << endl;
       T** tmp = _table_p;
-      _table_size = s / CHUNK_SIZE + 1;
+
+      _table_size = (s / CHUNK_SIZE);
+      if((s % CHUNK_SIZE) != 0)
+        _table_size++;
       cout << "new size: " << _table_size << endl;
       _table_p = _table_a.allocate(_table_size);
-      cout << "here" << endl;
-      
-      for(size_type i = 0; i <= _table_size; ++i) {
-        uninitialized_copy(_table_a, _table_p, _table_p + size(), tmp + i);
-        cout << "allocating chunk: " << i << endl;
-      }
+      uninitialized_fill(_table_a, _table_p, _table_p + _table_size, pointer());
 
+      cout << "here" << endl;
+      if(size() != 0) {
+        std::copy(tmp, tmp + _table_size - 1, _table_p);
+      }
 
       pointer _chunk_p = _chunk_a.allocate(CHUNK_SIZE); 
             cout << "new entry allocated" << endl;
 
-      uninitialized_fill(_chunk_a, _chunk_p, _chunk_p + CHUNK_SIZE, value_type());
-      _table_p[_table_size] = _chunk_p;
 
-      _b_table_idx = 0;
-      _b_chunk_idx = 0;
+      uninitialized_fill(_chunk_a, _chunk_p, _chunk_p + CHUNK_SIZE, v);
+      _table_p[_table_size - 1] = _chunk_p;
+      cout << "assert" << endl;
+      ASSERT_EQ((*_table_p)[0], *_chunk_p);
+      cout << "assert2" << endl;
+      ASSERT_EQ((*_table_p)[1], v);
+      ASSERT_EQ((*_table_p)[CHUNK_SIZE - 1], v);
 
-      _b = iterator(this, 0);
-      _l = iterator(this, _table_size * CHUNK_SIZE);
-      _e = iterator(this, s);
+      // _b_table_idx = 0;
+      // _b_chunk_idx = 0;
+
+      // _b = iterator(this, 0);
+      _l += CHUNK_SIZE;
+      _e += s - size();
+      cout << "e's index: " << _e._idx << endl;
 
     }
     
