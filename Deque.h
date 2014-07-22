@@ -863,8 +863,16 @@ class my_deque {
     /**
      * <your documentation>
      */
-    void push_back (const_reference) {
-      // <your code>
+    void push_back (const_reference v) {
+      if(_e == _l) {
+        cout << "expansion needed." << endl;
+        resize(size() + 1, v);
+      }
+      else {
+        cout << "none" << endl;
+        _e++;
+        *_e = v;
+      }
       assert(valid());
     }
 
@@ -885,9 +893,37 @@ class my_deque {
      */
     void resize (size_type s, const_reference v = value_type()) {
       // <your code>
-      assert(valid());
-    }
+      // assert(valid());
+      cout << "size : " << s << " current size: " << s << endl;
+      T** tmp = _table_p;
+      _table_size = s / CHUNK_SIZE + 1;
+      cout << "new size: " << _table_size << endl;
+      _table_p = _table_a.allocate(_table_size);
+      cout << "here" << endl;
+      
+      for(size_type i = 0; i <= _table_size; ++i) {
+        uninitialized_copy(_table_a, _table_p, _table_p + size(), tmp + i);
+        cout << "allocating chunk: " << i << endl;
+      }
 
+
+      pointer _chunk_p = _chunk_a.allocate(CHUNK_SIZE); 
+            cout << "new entry allocated" << endl;
+
+      uninitialized_fill(_chunk_a, _chunk_p, _chunk_p + CHUNK_SIZE, value_type());
+      _table_p[_table_size] = _chunk_p;
+
+      _b_table_idx = 0;
+      _b_chunk_idx = 0;
+
+      _b = iterator(this, 0);
+      _l = iterator(this, _table_size * CHUNK_SIZE);
+      _e = iterator(this, s);
+
+    }
+    
+
+      
     // ----
     // size
     // ----
@@ -898,7 +934,7 @@ class my_deque {
     size_type size () const {
       // TODO: operator - for iterators
       return _e._idx - _b._idx;
-      return 0;
+      // return 0;
     }
 
     // ----
@@ -912,6 +948,14 @@ class my_deque {
       // <your code>
       assert(valid());
     }
+
+
+
+
+
+
+
+
 };
 
 #endif // Deque_h
