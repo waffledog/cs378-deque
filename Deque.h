@@ -268,7 +268,6 @@ class my_deque {
          * <your documentation>
          */
         iterator& operator -- () {
-          // <your code>
           --_idx;
           assert(valid());
           return *this;
@@ -279,7 +278,6 @@ class my_deque {
          */
         iterator operator -- (int) {
           iterator x = *this;
-          // --(*this);
           --_idx;
           assert(valid());
           return x;
