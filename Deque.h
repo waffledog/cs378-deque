@@ -113,7 +113,9 @@ class my_deque {
     // --------
 
     class iterator {
+
       friend class my_deque;
+
       public:
         // --------
         // typedefs
@@ -151,8 +153,7 @@ class my_deque {
          * <your documentation>
          */
         friend bool operator == (const iterator& lhs, const iterator& rhs) {
-          // <your code>
-          return true;
+          return (lhs._d == rhs._d) && (lhs._idx == rhs._idx);
         }
 
         /**
@@ -218,11 +219,7 @@ class my_deque {
          * <your documentation>
          */
         reference operator * () const {
-          // <your code>
-          // dummy is just to be able to compile the skeleton, remove it
           return (*_d)[_idx];
-          // static value_type dummy;
-          // return dummy;
         }
 
         // -----------
@@ -268,7 +265,6 @@ class my_deque {
          * <your documentation>
          */
         iterator& operator -- () {
-          // <your code>
           --_idx;
           assert(valid());
           return *this;
@@ -279,7 +275,6 @@ class my_deque {
          */
         iterator operator -- (int) {
           iterator x = *this;
-          // --(*this);
           --_idx;
           assert(valid());
           return x;
@@ -293,7 +288,7 @@ class my_deque {
          * <your documentation>
          */
         iterator& operator += (difference_type d) {
-          // <your code>
+          _idx += d;
           assert(valid());
           return *this;
         }
@@ -306,7 +301,7 @@ class my_deque {
          * <your documentation>
          */
         iterator& operator -= (difference_type d) {
-          // <your code>
+          _idx -= d;
           assert(valid());
           return *this;
         }
@@ -513,9 +508,8 @@ class my_deque {
      * <your documentation>
      */
     friend bool operator == (const my_deque& lhs, const my_deque& rhs) {
-      // <your code>
-      // you must use std::equal()
-      return true;
+      // TODO: Replace with const_iterators once they've been implemented
+      return std::equal(lhs.begin(), lhs.end(), rhs.begin());
     }
 
     // ----------
@@ -562,8 +556,8 @@ class my_deque {
     // -----
 
     bool valid () const {
-      // <your code>
-      return (!_b._idx && !_e._idx && !_l._idx) || ((_b._idx <= _e._idx) && (_e._idx <= _l._idx));
+      return (!_b._idx && !_e._idx && !_l._idx) || 
+             ((_b._idx <= _e._idx) && (_e._idx <= _l._idx));
       return true;
     }
 
@@ -573,7 +567,7 @@ class my_deque {
     // ------------
 
     /**
-     * <your documentation>
+     * Default Constructor: An Empty Deque
      */
     explicit my_deque (const allocator_type& a = allocator_type()) {
       my_deque(0, value_type(), a);
@@ -582,22 +576,22 @@ class my_deque {
     }
 
     /**
-     * <your documentation>
+     * Construct a deque of the specified size.
      */
     explicit my_deque (size_type s, const_reference v = value_type(), 
                        const allocator_type& a = allocator_type()) {
-      cout << "Entering my_deque constructor" << endl;
-      cout << "s: " << s << endl;
+      //cout << "Entering my_deque constructor" << endl;
+      //cout << "s: " << s << endl;
 
       // Create chunk table
       _table_size = (s / CHUNK_SIZE) + 1;
-      cout << "_table_size: " << _table_size << endl;
+      //cout << "_table_size: " << _table_size << endl;
       _table_p = _table_a.allocate(_table_size);
       uninitialized_fill(_table_a, _table_p, _table_p + _table_size, pointer());
 
       // Allocate chunks and map them into the table
       for (size_type i = 0; i < _table_size; ++ i) {
-        cout << "allocating chunk " << i << endl;
+        //cout << "allocating chunk " << i << endl;
         pointer _chunk_p = _chunk_a.allocate(CHUNK_SIZE);
         uninitialized_fill(_chunk_a, _chunk_p, _chunk_p + CHUNK_SIZE, v);
         _table_p[i] = _chunk_p;
@@ -651,15 +645,16 @@ class my_deque {
     // -----------
 
     /**
-     * <your documentation>
+     * Access the element at the specified deque index. 
      * @param index A virtual index into this deque
+     * @return An l-val reference to the element
      */
     reference operator [] (size_type index) {
-      cout << "subscript(" << index << ")" << endl;
+      //cout << "subscript(" << index << ")" << endl;
       size_type table_offset = index / CHUNK_SIZE;
       size_type chunk_offset = index % CHUNK_SIZE;
 
-      cout << "table offset, chunk_offset: " << "(" << table_offset << ", " << chunk_offset << ")" << endl;
+      //cout << "table offset, chunk_offset: " << "(" << table_offset << ", " << chunk_offset << ")" << endl;
 
       size_type table_idx = _b_table_idx + table_offset;
       size_type chunk_idx = _b_chunk_idx + chunk_offset;
@@ -669,7 +664,7 @@ class my_deque {
         ++table_idx;
       }
 
-      cout << "table offset, chunk_offset: " << "(" << table_idx << ", " << chunk_idx << ")" << endl;
+      //cout << "table offset, chunk_offset: " << "(" << table_idx << ", " << chunk_idx << ")" << endl;
 
       return _table_p[table_idx][chunk_idx]; 
     }
@@ -689,13 +684,9 @@ class my_deque {
      * <your documentation>
      */
     reference at (size_type index) {
-      // <your code>
-      // dummy is just to be able to compile the skeleton, remove it
       if(index >= size())
         throw std::out_of_range("deque");
       return (*this)[index];
-      // static value_type dummy;
-      // return dummy;
     }
 
     /**
@@ -710,13 +701,12 @@ class my_deque {
     // ----
 
     /**
-     * <your documentation>
+     * Access the last element
      */
     reference back () {
-      // <your code>
-      // dummy is just to be able to compile the skeleton, remove it
-      static value_type dummy;
-      return dummy;
+      typename my_deque::iterator e = (*this).end();
+      --e;
+      return *e;
     }
 
     /**
@@ -778,8 +768,6 @@ class my_deque {
      * <your documentation>
      */
     iterator end () {
-      // <your code>
-      // return iterator(/* <your arguments> */);
       return _e;
     }
 
@@ -898,9 +886,8 @@ class my_deque {
      * <your documentation>
      */
     size_type size () const {
-      // <your code>
-      // TO DO: operator - for iterators
-      // return _e._idx - _b._idx;
+      // TODO: operator - for iterators
+      return _e._idx - _b._idx;
       return 0;
     }
 

@@ -82,6 +82,47 @@ typedef testing::Types< std::deque<int>,
 
 TYPED_TEST_CASE(TestDeque, my_types);
 
+/*----------------------------------------------------------------------------*\
+    DEQUE CLASS TESTS
+\*----------------------------------------------------------------------------*/
+
+TYPED_TEST(TestDeque, EqualEqual_1) {
+  typedef typename TestFixture::deque_type      deque_type;
+  typedef typename TestFixture::allocator_type  allocator_type;
+  typedef typename TestFixture::value_type      value_type;
+  typedef typename TestFixture::size_type       size_type;
+  typedef typename TestFixture::difference_type difference_type;
+  typedef typename TestFixture::pointer         pointer;
+  typedef typename TestFixture::const_pointer   const_pointer;
+  typedef typename TestFixture::reference       reference;
+  typedef typename TestFixture::const_reference const_reference;
+
+  deque_type x;
+  deque_type y;
+  ASSERT_EQ(x, y);
+}
+
+TYPED_TEST(TestDeque, EqualEqual_2) {
+  typedef typename TestFixture::deque_type      deque_type;
+  typedef typename TestFixture::allocator_type  allocator_type;
+  typedef typename TestFixture::value_type      value_type;
+  typedef typename TestFixture::size_type       size_type;
+  typedef typename TestFixture::difference_type difference_type;
+  typedef typename TestFixture::pointer         pointer;
+  typedef typename TestFixture::const_pointer   const_pointer;
+  typedef typename TestFixture::reference       reference;
+  typedef typename TestFixture::const_reference const_reference;
+
+  deque_type x(40);
+  deque_type y(40);
+  for (int i = 0; i < 40; ++i) {
+    x[i] = 33;
+    y[i] = 33;
+  }
+
+  ASSERT_EQ(x, y);
+}
+
 TYPED_TEST(TestDeque, Empty_1) {
   typedef typename TestFixture::deque_type      deque_type;
   typedef typename TestFixture::allocator_type  allocator_type;
@@ -96,6 +137,22 @@ TYPED_TEST(TestDeque, Empty_1) {
   deque_type x;
   const bool b = x.empty();
   ASSERT_TRUE(b);
+}
+
+TYPED_TEST(TestDeque, Empty_2) {
+  typedef typename TestFixture::deque_type      deque_type;
+  typedef typename TestFixture::allocator_type  allocator_type;
+  typedef typename TestFixture::value_type      value_type;
+  typedef typename TestFixture::size_type       size_type;
+  typedef typename TestFixture::difference_type difference_type;
+  typedef typename TestFixture::pointer         pointer;
+  typedef typename TestFixture::const_pointer   const_pointer;
+  typedef typename TestFixture::reference       reference;
+  typedef typename TestFixture::const_reference const_reference;
+
+  deque_type x(27);
+  const bool b = x.empty();
+  ASSERT_FALSE(b);
 }
 
 TYPED_TEST(TestDeque, Size_1) {
@@ -114,10 +171,45 @@ TYPED_TEST(TestDeque, Size_1) {
   ASSERT_EQ(0, s);
 }
 
+TYPED_TEST(TestDeque, Size_2) {
+  typedef typename TestFixture::deque_type      deque_type;
+  typedef typename TestFixture::allocator_type  allocator_type;
+  typedef typename TestFixture::value_type      value_type;
+  typedef typename TestFixture::size_type       size_type;
+  typedef typename TestFixture::difference_type difference_type;
+  typedef typename TestFixture::pointer         pointer;
+  typedef typename TestFixture::const_pointer   const_pointer;
+  typedef typename TestFixture::reference       reference;
+  typedef typename TestFixture::const_reference const_reference;
+
+  deque_type x(32);
+  const size_type s = x.size();
+  ASSERT_EQ(32, s);
+}
+
+TYPED_TEST(TestDeque, Size_3) {
+  typedef typename TestFixture::deque_type      deque_type;
+  typedef typename TestFixture::allocator_type  allocator_type;
+  typedef typename TestFixture::value_type      value_type;
+  typedef typename TestFixture::size_type       size_type;
+  typedef typename TestFixture::difference_type difference_type;
+  typedef typename TestFixture::pointer         pointer;
+  typedef typename TestFixture::const_pointer   const_pointer;
+  typedef typename TestFixture::reference       reference;
+  typedef typename TestFixture::const_reference const_reference;
+
+  deque_type x;
+  for (int i = 0; i < 30; ++i) {
+    x.push_back(i);
+    x.push_front(i);
+  }
+  const size_type s = x.size();
+  ASSERT_EQ(60, s);
+}
+
 TYPED_TEST(TestDeque, Constructor_1) {
   typedef typename TestFixture::deque_type      deque_type;
   deque_type x(56);
-  // TODO
 }
 
 TYPED_TEST(TestDeque, Subscript_1) {
@@ -130,23 +222,177 @@ TYPED_TEST(TestDeque, Subscript_1) {
   typedef typename TestFixture::const_pointer   const_pointer;
   typedef typename TestFixture::reference       reference;
   typedef typename TestFixture::const_reference const_reference;
-  deque_type x(10);
-  ASSERT_EQ(x[1], 0);
 
-  deque_type y(3);
+  deque_type x(3);
   for(int i = 0; i < 3; i++) {
     ASSERT_EQ(x[i], 0);
   }
+}
 
-  for(int j = 0; j < 10; j++) {
+TYPED_TEST(TestDeque, Subscript_2) {
+  typedef typename TestFixture::deque_type      deque_type;
+  typedef typename TestFixture::allocator_type  allocator_type;
+  typedef typename TestFixture::value_type      value_type;
+  typedef typename TestFixture::size_type       size_type;
+  typedef typename TestFixture::difference_type difference_type;
+  typedef typename TestFixture::pointer         pointer;
+  typedef typename TestFixture::const_pointer   const_pointer;
+  typedef typename TestFixture::reference       reference;
+  typedef typename TestFixture::const_reference const_reference;
+
+  deque_type x(1000);
+  ASSERT_EQ(x[1], 0);
+  ASSERT_EQ(x[999], 0);
+
+  for(int j = 0; j < 1000; j++) {
     x[j] = 5;
     ASSERT_EQ(x[j], 5);
   }
-  typename deque_type::iterator p = x.begin();
-  ASSERT_EQ(*p, 5);
-  *p = *p + 4;
-  ASSERT_EQ(*p, 9);
+}
 
+// TODO: Test Deque Copy Constructor
+
+// TODO: Test Deque Copy Assignment 
+
+// TODO: Test Deque at() 
+
+// TODO: Test Deque const_reference at() 
+
+TYPED_TEST(TestDeque, Back_1) {
+  typedef typename TestFixture::deque_type      deque_type;
+  typedef typename TestFixture::allocator_type  allocator_type;
+  typedef typename TestFixture::value_type      value_type;
+  typedef typename TestFixture::size_type       size_type;
+  typedef typename TestFixture::difference_type difference_type;
+  typedef typename TestFixture::pointer         pointer;
+  typedef typename TestFixture::const_pointer   const_pointer;
+  typedef typename TestFixture::reference       reference;
+  typedef typename TestFixture::const_reference const_reference;
+
+  deque_type x(30);
+  x[29] = 99;
+  ASSERT_EQ(x.back(), 99);
+
+  typename deque_type::iterator i = x.end();
+  i -= 1;
+  ASSERT_EQ(x.back(), *i);
+  ASSERT_EQ(&(x.back()), &(*i));
+}
+
+TYPED_TEST(TestDeque, Back_2) {
+  typedef typename TestFixture::deque_type      deque_type;
+  typedef typename TestFixture::allocator_type  allocator_type;
+  typedef typename TestFixture::value_type      value_type;
+  typedef typename TestFixture::size_type       size_type;
+  typedef typename TestFixture::difference_type difference_type;
+  typedef typename TestFixture::pointer         pointer;
+  typedef typename TestFixture::const_pointer   const_pointer;
+  typedef typename TestFixture::reference       reference;
+  typedef typename TestFixture::const_reference const_reference;
+
+  deque_type x(30);
+  x[29] = 99;
+
+  reference b = x.back();
+  ASSERT_EQ(b, 99);
+
+  b += 1;
+  ASSERT_EQ(x.back(), 100);
+}
+
+// TODO: Test Deque const_reference back() 
+
+// TODO: Test Deque clear() 
+
+// TODO: Test Deque end() 
+
+// TODO: Test Deque const_iterator end() 
+
+// TODO: Test Deque erase() 
+
+// TODO: Test Deque insert() 
+
+// TODO: Test Deque pop_back() 
+
+// TODO: Test Deque pop_front() 
+
+// TODO: Test Deque push_back() 
+
+// TODO: Test Deque push_front() 
+
+// TODO: Test Deque resize() 
+
+// TODO: Test Deque swap() 
+
+/*----------------------------------------------------------------------------*\
+    ITERATOR CLASS TESTS
+\*----------------------------------------------------------------------------*/
+
+TYPED_TEST(TestDeque, Iterator_EqualEqual_1) {
+  typedef typename TestFixture::deque_type      deque_type;
+  typedef typename TestFixture::allocator_type  allocator_type;
+  typedef typename TestFixture::value_type      value_type;
+  typedef typename TestFixture::size_type       size_type;
+  typedef typename TestFixture::difference_type difference_type;
+  typedef typename TestFixture::pointer         pointer;
+  typedef typename TestFixture::const_pointer   const_pointer;
+  typedef typename TestFixture::reference       reference;
+  typedef typename TestFixture::const_reference const_reference;
+
+  deque_type x(10);
+
+  typename deque_type::iterator b1 = x.begin();
+  typename deque_type::iterator b2 = x.begin();
+
+  ASSERT_TRUE(b1 == b2);
+  b1 += 9;
+  b2 += 5;
+  b2 += 4;
+  ASSERT_TRUE(b1 == b2);
+}
+
+TYPED_TEST(TestDeque, Iterator_NotEqual_1) {
+  typedef typename TestFixture::deque_type      deque_type;
+  typedef typename TestFixture::allocator_type  allocator_type;
+  typedef typename TestFixture::value_type      value_type;
+  typedef typename TestFixture::size_type       size_type;
+  typedef typename TestFixture::difference_type difference_type;
+  typedef typename TestFixture::pointer         pointer;
+  typedef typename TestFixture::const_pointer   const_pointer;
+  typedef typename TestFixture::reference       reference;
+  typedef typename TestFixture::const_reference const_reference;
+
+  deque_type x(10);
+  deque_type y(10);
+
+  typename deque_type::iterator b1 = x.begin();
+  typename deque_type::iterator b2 = y.begin();
+
+  ASSERT_TRUE(b1 != b2);
+}
+
+TYPED_TEST(TestDeque, Iterator_NotEqual_2) {
+  typedef typename TestFixture::deque_type      deque_type;
+  typedef typename TestFixture::allocator_type  allocator_type;
+  typedef typename TestFixture::value_type      value_type;
+  typedef typename TestFixture::size_type       size_type;
+  typedef typename TestFixture::difference_type difference_type;
+  typedef typename TestFixture::pointer         pointer;
+  typedef typename TestFixture::const_pointer   const_pointer;
+  typedef typename TestFixture::reference       reference;
+  typedef typename TestFixture::const_reference const_reference;
+
+  deque_type x(300);
+  int count = 0;
+  typename deque_type::iterator b = x.begin();
+  typename deque_type::iterator e = x.end();
+
+  while (b != e) {
+    ++count;
+    ++b;
+  }
+
+  ASSERT_EQ(count, 300);
 }
 
 TYPED_TEST(TestDeque, Iterator_Dereference_1) {
@@ -168,12 +414,180 @@ TYPED_TEST(TestDeque, Iterator_Dereference_1) {
   ASSERT_EQ(*p, 0);
   p--;
   ASSERT_EQ(*p, 5);
+}
 
+// Note: This is a non-typed test
+TEST(TestMyDeque, Iterator_Arrow_1) {
 
+  struct dummy {
+    int x;
+    int y;
+    dummy() : x(1), y(2) {}
+  };
 
+  my_deque<dummy> x(10);
+  typename my_deque<dummy>::iterator b = x.begin();
+   
+  for (int i = 0; i < 10; ++i) {
+    ASSERT_EQ(b->x, 1); 
+    ASSERT_EQ(b->y, 2); 
+    ++b;
+  }
+}
+
+TYPED_TEST(TestDeque, Iterator_PrePluPlus_1) {
+  typedef typename TestFixture::deque_type      deque_type;
+  typedef typename TestFixture::allocator_type  allocator_type;
+  typedef typename TestFixture::value_type      value_type;
+  typedef typename TestFixture::size_type       size_type;
+  typedef typename TestFixture::difference_type difference_type;
+  typedef typename TestFixture::pointer         pointer;
+  typedef typename TestFixture::const_pointer   const_pointer;
+  typedef typename TestFixture::reference       reference;
+  typedef typename TestFixture::const_reference const_reference;
+
+  deque_type x(100);
+  for (int i = 0; i < 100; ++i) {
+    x[i] = i;
+  }
+  typename deque_type::iterator p = x.begin();
+
+  for (int i = 0; i < 100; ++i) {
+    ASSERT_EQ(*p, i);
+    ++p;
+  }
+}
+
+TYPED_TEST(TestDeque, Iterator_PostPlusPlus_1) {
+  typedef typename TestFixture::deque_type      deque_type;
+  typedef typename TestFixture::allocator_type  allocator_type;
+  typedef typename TestFixture::value_type      value_type;
+  typedef typename TestFixture::size_type       size_type;
+  typedef typename TestFixture::difference_type difference_type;
+  typedef typename TestFixture::pointer         pointer;
+  typedef typename TestFixture::const_pointer   const_pointer;
+  typedef typename TestFixture::reference       reference;
+  typedef typename TestFixture::const_reference const_reference;
+
+  deque_type x(100);
+  for (int i = 0; i < 100; ++i) {
+    x[i] = i;
+  }
+  typename deque_type::iterator p = x.begin();
+
+  for (int i = 0; i < 100; ++i) {
+    ASSERT_EQ(*p, i);
+    value_type temp = *(p++);
+    ASSERT_EQ(temp, i);
+  }
+}
+
+TYPED_TEST(TestDeque, Iterator_PreMinusMinus_1) {
+  typedef typename TestFixture::deque_type      deque_type;
+  typedef typename TestFixture::allocator_type  allocator_type;
+  typedef typename TestFixture::value_type      value_type;
+  typedef typename TestFixture::size_type       size_type;
+  typedef typename TestFixture::difference_type difference_type;
+  typedef typename TestFixture::pointer         pointer;
+  typedef typename TestFixture::const_pointer   const_pointer;
+  typedef typename TestFixture::reference       reference;
+  typedef typename TestFixture::const_reference const_reference;
+
+  deque_type x(100);
+  for (int i = 0; i < 100; ++i) {
+    x[i] = i;
+  }
+  typename deque_type::iterator p = x.begin();
+  p += 99;
+
+  for (int i = 0; i < 100; ++i) {
+    ASSERT_EQ(*p, 99 - i);
+    --p;
+  }
+}
+
+TYPED_TEST(TestDeque, Iterator_PostMinusMinus_1) {
+  typedef typename TestFixture::deque_type      deque_type;
+  typedef typename TestFixture::allocator_type  allocator_type;
+  typedef typename TestFixture::value_type      value_type;
+  typedef typename TestFixture::size_type       size_type;
+  typedef typename TestFixture::difference_type difference_type;
+  typedef typename TestFixture::pointer         pointer;
+  typedef typename TestFixture::const_pointer   const_pointer;
+  typedef typename TestFixture::reference       reference;
+  typedef typename TestFixture::const_reference const_reference;
+
+  deque_type x(100);
+  for (int i = 0; i < 100; ++i) {
+    x[i] = i;
+  }
+  typename deque_type::iterator p = x.begin();
+  p += 99;
+
+  for (int i = 0; i < 100; ++i) {
+    ASSERT_EQ(*p, 99 - i);
+    value_type temp = *(p--);
+    ASSERT_EQ(temp, 99 - i);
+  }
+}
+
+TYPED_TEST(TestDeque, Iterator_PlusEq_1) {
+  typedef typename TestFixture::deque_type      deque_type;
+  typedef typename TestFixture::allocator_type  allocator_type;
+  typedef typename TestFixture::value_type      value_type;
+  typedef typename TestFixture::size_type       size_type;
+  typedef typename TestFixture::difference_type difference_type;
+  typedef typename TestFixture::pointer         pointer;
+  typedef typename TestFixture::const_pointer   const_pointer;
+  typedef typename TestFixture::reference       reference;
+  typedef typename TestFixture::const_reference const_reference;
+
+  deque_type x(100);
+  for (int i = 0; i < 100; ++i) {
+    x[i] = i;
+  }
+  typename deque_type::iterator i = x.begin();
+  ASSERT_EQ(*i, 0);
+  i += 10;
+  ASSERT_EQ(*i, 10);
+  i += 33;
+  ASSERT_EQ(*i, 43);
+  i += 27;
+  ASSERT_EQ(*i, 70);
+  i += 11;
+  ASSERT_EQ(*i, 81);
+  i += 18;
+  ASSERT_EQ(*i, 99);
 }
 
 
+TYPED_TEST(TestDeque, Iterator_MinusEq_1) {
+  typedef typename TestFixture::deque_type      deque_type;
+  typedef typename TestFixture::allocator_type  allocator_type;
+  typedef typename TestFixture::value_type      value_type;
+  typedef typename TestFixture::size_type       size_type;
+  typedef typename TestFixture::difference_type difference_type;
+  typedef typename TestFixture::pointer         pointer;
+  typedef typename TestFixture::const_pointer   const_pointer;
+  typedef typename TestFixture::reference       reference;
+  typedef typename TestFixture::const_reference const_reference;
+
+  deque_type x(100);
+  for (int i = 0; i < 100; ++i) {
+    x[i] = i;
+  }
+  typename deque_type::iterator i = x.begin();
+  i += 99;
+  ASSERT_EQ(*i, 99);
+  i -= 10;
+  ASSERT_EQ(*i, 89);
+  i -= 9;
+  ASSERT_EQ(*i, 80);
+  i -= 45;
+  ASSERT_EQ(*i, 35);
+  i -= 35;
+  ASSERT_EQ(*i, 0);
+}
 
 
 
