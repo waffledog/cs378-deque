@@ -586,18 +586,18 @@ class my_deque {
      */
     explicit my_deque (size_type s, const_reference v = value_type(), 
                        const allocator_type& a = allocator_type()) {
-      cout << "Entering my_deque constructor" << endl;
-      cout << "s: " << s << endl;
+      //cout << "Entering my_deque constructor" << endl;
+      //cout << "s: " << s << endl;
 
       // Create chunk table
       _table_size = (s / CHUNK_SIZE) + 1;
-      cout << "_table_size: " << _table_size << endl;
+      //cout << "_table_size: " << _table_size << endl;
       _table_p = _table_a.allocate(_table_size);
       uninitialized_fill(_table_a, _table_p, _table_p + _table_size, pointer());
 
       // Allocate chunks and map them into the table
       for (size_type i = 0; i < _table_size; ++ i) {
-        cout << "allocating chunk " << i << endl;
+        //cout << "allocating chunk " << i << endl;
         pointer _chunk_p = _chunk_a.allocate(CHUNK_SIZE);
         uninitialized_fill(_chunk_a, _chunk_p, _chunk_p + CHUNK_SIZE, v);
         _table_p[i] = _chunk_p;
@@ -651,15 +651,16 @@ class my_deque {
     // -----------
 
     /**
-     * <your documentation>
+     * Access the element at the specified deque index. 
      * @param index A virtual index into this deque
+     * @return An l-val reference to the element
      */
     reference operator [] (size_type index) {
-      cout << "subscript(" << index << ")" << endl;
+      //cout << "subscript(" << index << ")" << endl;
       size_type table_offset = index / CHUNK_SIZE;
       size_type chunk_offset = index % CHUNK_SIZE;
 
-      cout << "table offset, chunk_offset: " << "(" << table_offset << ", " << chunk_offset << ")" << endl;
+      //cout << "table offset, chunk_offset: " << "(" << table_offset << ", " << chunk_offset << ")" << endl;
 
       size_type table_idx = _b_table_idx + table_offset;
       size_type chunk_idx = _b_chunk_idx + chunk_offset;
@@ -669,7 +670,7 @@ class my_deque {
         ++table_idx;
       }
 
-      cout << "table offset, chunk_offset: " << "(" << table_idx << ", " << chunk_idx << ")" << endl;
+      //cout << "table offset, chunk_offset: " << "(" << table_idx << ", " << chunk_idx << ")" << endl;
 
       return _table_p[table_idx][chunk_idx]; 
     }
@@ -898,9 +899,8 @@ class my_deque {
      * <your documentation>
      */
     size_type size () const {
-      // <your code>
-      // TO DO: operator - for iterators
-      // return _e._idx - _b._idx;
+      // TODO: operator - for iterators
+      return _e._idx - _b._idx;
       return 0;
     }
 
