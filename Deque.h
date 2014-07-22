@@ -556,8 +556,8 @@ class my_deque {
     // -----
 
     bool valid () const {
-      // <your code>
-      return (!_b._idx && !_e._idx && !_l._idx) || ((_b._idx <= _e._idx) && (_e._idx <= _l._idx));
+      return (!_b._idx && !_e._idx && !_l._idx) || 
+             ((_b._idx <= _e._idx) && (_e._idx <= _l._idx));
       return true;
     }
 
@@ -567,7 +567,7 @@ class my_deque {
     // ------------
 
     /**
-     * <your documentation>
+     * Default Constructor: An Empty Deque
      */
     explicit my_deque (const allocator_type& a = allocator_type()) {
       my_deque(0, value_type(), a);
@@ -576,7 +576,7 @@ class my_deque {
     }
 
     /**
-     * <your documentation>
+     * Construct a deque of the specified size.
      */
     explicit my_deque (size_type s, const_reference v = value_type(), 
                        const allocator_type& a = allocator_type()) {
@@ -684,13 +684,9 @@ class my_deque {
      * <your documentation>
      */
     reference at (size_type index) {
-      // <your code>
-      // dummy is just to be able to compile the skeleton, remove it
       if(index >= size())
         throw std::out_of_range("deque");
       return (*this)[index];
-      // static value_type dummy;
-      // return dummy;
     }
 
     /**
@@ -705,13 +701,12 @@ class my_deque {
     // ----
 
     /**
-     * <your documentation>
+     * Access the last element
      */
     reference back () {
-      // <your code>
-      // dummy is just to be able to compile the skeleton, remove it
-      static value_type dummy;
-      return dummy;
+      typename my_deque::iterator e = (*this).end();
+      --e;
+      return *e;
     }
 
     /**
@@ -773,8 +768,6 @@ class my_deque {
      * <your documentation>
      */
     iterator end () {
-      // <your code>
-      // return iterator(/* <your arguments> */);
       return _e;
     }
 

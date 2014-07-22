@@ -210,7 +210,6 @@ TYPED_TEST(TestDeque, Size_3) {
 TYPED_TEST(TestDeque, Constructor_1) {
   typedef typename TestFixture::deque_type      deque_type;
   deque_type x(56);
-  // TODO
 }
 
 TYPED_TEST(TestDeque, Subscript_1) {
@@ -250,6 +249,80 @@ TYPED_TEST(TestDeque, Subscript_2) {
     ASSERT_EQ(x[j], 5);
   }
 }
+
+// TODO: Test Deque Copy Constructor
+
+// TODO: Test Deque Copy Assignment 
+
+// TODO: Test Deque at() 
+
+// TODO: Test Deque const_reference at() 
+
+TYPED_TEST(TestDeque, Back_1) {
+  typedef typename TestFixture::deque_type      deque_type;
+  typedef typename TestFixture::allocator_type  allocator_type;
+  typedef typename TestFixture::value_type      value_type;
+  typedef typename TestFixture::size_type       size_type;
+  typedef typename TestFixture::difference_type difference_type;
+  typedef typename TestFixture::pointer         pointer;
+  typedef typename TestFixture::const_pointer   const_pointer;
+  typedef typename TestFixture::reference       reference;
+  typedef typename TestFixture::const_reference const_reference;
+
+  deque_type x(30);
+  x[29] = 99;
+  ASSERT_EQ(x.back(), 99);
+
+  typename deque_type::iterator i = x.end();
+  i -= 1;
+  ASSERT_EQ(x.back(), *i);
+  ASSERT_EQ(&(x.back()), &(*i));
+}
+
+TYPED_TEST(TestDeque, Back_2) {
+  typedef typename TestFixture::deque_type      deque_type;
+  typedef typename TestFixture::allocator_type  allocator_type;
+  typedef typename TestFixture::value_type      value_type;
+  typedef typename TestFixture::size_type       size_type;
+  typedef typename TestFixture::difference_type difference_type;
+  typedef typename TestFixture::pointer         pointer;
+  typedef typename TestFixture::const_pointer   const_pointer;
+  typedef typename TestFixture::reference       reference;
+  typedef typename TestFixture::const_reference const_reference;
+
+  deque_type x(30);
+  x[29] = 99;
+
+  reference b = x.back();
+  ASSERT_EQ(b, 99);
+
+  b += 1;
+  ASSERT_EQ(x.back(), 100);
+}
+
+// TODO: Test Deque const_reference back() 
+
+// TODO: Test Deque clear() 
+
+// TODO: Test Deque end() 
+
+// TODO: Test Deque const_iterator end() 
+
+// TODO: Test Deque erase() 
+
+// TODO: Test Deque insert() 
+
+// TODO: Test Deque pop_back() 
+
+// TODO: Test Deque pop_front() 
+
+// TODO: Test Deque push_back() 
+
+// TODO: Test Deque push_front() 
+
+// TODO: Test Deque resize() 
+
+// TODO: Test Deque swap() 
 
 /*----------------------------------------------------------------------------*\
     ITERATOR CLASS TESTS
