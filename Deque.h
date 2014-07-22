@@ -113,7 +113,9 @@ class my_deque {
     // --------
 
     class iterator {
+
       friend class my_deque;
+
       public:
         // --------
         // typedefs
@@ -217,11 +219,7 @@ class my_deque {
          * <your documentation>
          */
         reference operator * () const {
-          // <your code>
-          // dummy is just to be able to compile the skeleton, remove it
           return (*_d)[_idx];
-          // static value_type dummy;
-          // return dummy;
         }
 
         // -----------
@@ -510,9 +508,8 @@ class my_deque {
      * <your documentation>
      */
     friend bool operator == (const my_deque& lhs, const my_deque& rhs) {
-      // <your code>
-      // you must use std::equal()
-      return true;
+      // TODO: Replace with const_iterators once they've been implemented
+      return std::equal(lhs.begin(), lhs.end(), rhs.begin());
     }
 
     // ----------
