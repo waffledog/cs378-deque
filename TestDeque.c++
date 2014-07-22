@@ -239,6 +239,25 @@ TYPED_TEST(TestDeque, Iterator_Dereference_1) {
   ASSERT_EQ(*p, 5);
 }
 
+// Note: This is a non-typed test
+TEST(TestMyDeque, Iterator_Arrow_1) {
+
+  struct dummy {
+    int x;
+    int y;
+    dummy() : x(1), y(2) {}
+  };
+
+  my_deque<dummy> x(10);
+  typename my_deque<dummy>::iterator b = x.begin();
+   
+  for (int i = 0; i < 10; ++i) {
+    ASSERT_EQ(b->x, 1); 
+    ASSERT_EQ(b->y, 2); 
+    ++b;
+  }
+}
+
 TYPED_TEST(TestDeque, Iterator_PrePluPlus_1) {
   typedef typename TestFixture::deque_type      deque_type;
   typedef typename TestFixture::allocator_type  allocator_type;
