@@ -895,18 +895,17 @@ class my_deque {
      * <your documentation>
      */
     void resize (size_type s, const_reference v = value_type()) {
-      //cout << "Entering resize()" << endl;
-      //cout << "size : " << s << " current size: " << size() << endl;
-      //cout << "_b_table_idx: " << _b_table_idx << endl;
-      T** tmp = _table_p;
+      cout << "Entering resize()" << endl;
+      cout << "Requested size : " << s << " current size: " << size() << endl;
 
+      T** tmp = _table_p;
       _table_size = (s / CHUNK_SIZE);
-      if((s % CHUNK_SIZE) != 0)
+      if((s % CHUNK_SIZE) != 0 || (size() == 0))
         _table_size++;
+
       //cout << "new size: " << _table_size << endl;
       _table_p = _table_a.allocate(_table_size);
       uninitialized_fill(_table_a, _table_p, _table_p + _table_size, pointer());
-      assert(_table_p[0] == 0x0);
 
       //cout << "here" << endl;
       if(size() != 0) {
@@ -915,22 +914,28 @@ class my_deque {
 
       pointer _chunk_p = _chunk_a.allocate(CHUNK_SIZE); 
       //cout << "new entry allocated" << endl;
-
+      cout << "v is " << v << endl;
       uninitialized_fill(_chunk_a, _chunk_p, _chunk_p + CHUNK_SIZE, v);
       _table_p[_table_size - 1] = _chunk_p;
       //cout << "assert" << endl;
-      ASSERT_EQ((*_table_p)[0], *_chunk_p);
       //cout << "assert2" << endl;
-      ASSERT_EQ((*_table_p)[1], v);
-      ASSERT_EQ((*_table_p)[CHUNK_SIZE - 1], v);
 
       // _b = iterator(this, 0);
       _l += CHUNK_SIZE;
       _e += s - size();
       //cout << "e's index: " << _e._idx << endl;
       assert(valid());
+      printChunkTable();
+      cout << "Leaving Resize()" << endl;
     }
     
+    // TODO: COMMENT OUT AFTER DEV
+    void printChunkTable() {
+      cout << "Chunk table has " << _table_size << " entries: " << endl;
+      for (size_t i = 0; i < _table_size; ++i) {
+        cout << "\t" << i << ": " << _table_p[i] << endl; 
+      }
+    } 
 
       
     // ----
