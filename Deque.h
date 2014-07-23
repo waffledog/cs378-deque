@@ -556,9 +556,15 @@ class my_deque {
     // -----
 
     bool valid () const {
-      return (!_b._idx && !_e._idx && !_l._idx) || 
-             ((_b._idx <= _e._idx) && (_e._idx <= _l._idx));
-      return true;
+      bool v = (!_b._idx && !_e._idx && !_l._idx) || 
+               ((_b._idx <= _e._idx) && (_e._idx <= _l._idx));
+      if (!v) {
+        cout << "Invalid Deque: " << endl;
+        cout << "\t_b._idx: " << _b._idx << endl;
+        cout << "\t_e._idx: " << _e._idx << endl;
+        cout << "\t_l._idx: " << _l._idx << endl;
+      }
+      return v;
     }
 
   public:
@@ -917,31 +923,32 @@ class my_deque {
       // CASE IV: Requested size is greater than existing capacity
       // TODO: Handle this case where its so much greater one more chunk wont be enough
       else {
+        cout << "Case IV" << endl;
         T** tmp = _table_p;
-        _table_size = (s / CHUNK_SIZE);
+        size_type new_table_size = (s / CHUNK_SIZE);
         if((s % CHUNK_SIZE) != 0 || (size() == 0))
-          _table_size++;
+          new_table_size++;
 
-        //cout << "new size: " << _table_size << endl;
-        _table_p = _table_a.allocate(_table_size);
-        uninitialized_fill(_table_a, _table_p, _table_p + _table_size, pointer());
+        // Allocate a new chunk table
+        _table_p = _table_a.allocate(new_table_size);
+        uninitialized_fill(_table_a, _table_p, _table_p + new_table_size, pointer());
 
-        //cout << "here" << endl;
-        if(size() != 0) {
-          std::copy(tmp, tmp + _table_size - 1, _table_p);
+        // Copy in the old chunk table
+        if(size() != 0) { // TODO: Try to get rid of this if statement
+          std::copy(tmp, tmp + _table_size, _table_p);
         }
 
-        pointer _chunk_p = _chunk_a.allocate(CHUNK_SIZE); 
-        //cout << "new entry allocated" << endl;
-        cout << "v is " << v << endl;
-        uninitialized_fill(_chunk_a, _chunk_p, _chunk_p + CHUNK_SIZE, v);
-        _table_p[_table_size - 1] = _chunk_p;
-        //cout << "assert" << endl;
-        //cout << "assert2" << endl;
+        // Add necessary additional chunks and map them into the chunk table 
+        size_type num_new_chunks = new_table_size - _table_size;
+        for (size_type i = 0; i < num_new_chunks; ++ i) {
+          pointer _chunk_p = _chunk_a.allocate(CHUNK_SIZE); 
+          uninitialized_fill(_chunk_a, _chunk_p, _chunk_p + CHUNK_SIZE, v);
+          _table_p[_table_size + i] = _chunk_p;
+        }
 
-        // _b = iterator(this, 0);
-        _l += CHUNK_SIZE;
-        _e += s - size();
+        _table_size = new_table_size;
+        _l += CHUNK_SIZE * num_new_chunks;
+        _e = _b + s;
         //cout << "e's index: " << _e._idx << endl;
       }
       assert(valid());
