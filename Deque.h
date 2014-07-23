@@ -635,7 +635,21 @@ class my_deque {
      * <your documentation>
      */
     ~my_deque () {
-      // <your code>
+      // Destroy and Deallocate every chunk
+      for (size_type i = 0; i < _table_size; ++i) {
+        pointer chunk_p = _table_p[i];
+        destroy(_chunk_a, chunk_p, chunk_p + CHUNK_SIZE);
+        _chunk_a.deallocate(chunk_p, CHUNK_SIZE);
+      }
+
+      // Destroy and Deallocate the chunk table
+      destroy(_table_a, _table_p, _table_p + _table_size);
+      _table_a.deallocate(_table_p, _table_size);
+      
+      _b._idx = _e._idx = _l._idx = 0;
+      _table_size = 0;
+      _table_p = NULL;
+
       assert(valid());
     }
 
@@ -942,10 +956,13 @@ class my_deque {
           _table_p[_table_size + i] = _chunk_p;
         }
 
+        // Destroy and Deallocate the old table
+        destroy(_table_a, tmp, tmp + _table_size);
+        _table_a.deallocate(tmp, _table_size);
+
         _table_size = new_table_size;
         _l += CHUNK_SIZE * num_new_chunks;
         _e = _b + s;
-        //cout << "e's index: " << _e._idx << endl;
       }
       assert(valid());
       // printChunkTable();
