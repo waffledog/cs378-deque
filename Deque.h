@@ -316,12 +316,15 @@ class my_deque {
     // --------------
 
     class const_iterator {
+
+      friend class my_deque;
+
       public:
         // --------
         // typedefs
         // --------
 
-        typedef std::bidirectional_iterator_tag   iterator_category;
+        typedef std::bidirectional_iterator_tag    iterator_category;
         typedef typename my_deque::value_type      value_type;
         typedef typename my_deque::difference_type difference_type;
         typedef typename my_deque::const_pointer   pointer;
@@ -331,8 +334,8 @@ class my_deque {
         // ----
         // data
         // ----
-
-        // <your data>
+        const my_deque* const _d; //! Pointer to the deque over we're iterating 
+        size_type _idx;           //! Indexing into chunk table
 
       private:
         // -----
@@ -353,8 +356,7 @@ class my_deque {
          * <your documentation>
          */
         friend bool operator == (const const_iterator& lhs, const const_iterator& rhs) {
-          // <your code>
-          return true;
+          return (lhs._d == rhs._d) && (lhs._idx == rhs._idx);
         }
 
         /**
@@ -392,10 +394,19 @@ class my_deque {
         // -----------
 
         /**
-         * <your documentation>
+         * Constructor 
+         * @param: d A pointer to a deque instance
+         * @param: i This iterator's virtual index into the deque
          */
-        const_iterator (/* <your arguments> */) {
-          // <your code>
+        const_iterator (my_deque* d, size_type i) : _d(d), _idx(i) {
+          assert(valid());
+        }
+
+        /**
+         * Conversion Constructor 
+         * @param: i An iterator instance 
+         */
+        const_iterator (iterator i) : _d(i._d), _idx(i._idx) {
           assert(valid());
         }
 
@@ -412,10 +423,7 @@ class my_deque {
          * <your documentation>
          */
         reference operator * () const {
-          // <your code>
-          // dummy is just to be able to compile the skeleton, remove it
-          static value_type dummy;
-          return dummy;
+          return (*_d)[_idx];
         }
 
         // -----------
@@ -437,7 +445,7 @@ class my_deque {
          * <your documentation>
          */
         const_iterator& operator ++ () {
-          // <your code>
+          ++_idx;
           assert(valid());
           return *this;
         }
@@ -460,7 +468,7 @@ class my_deque {
          * <your documentation>
          */
         const_iterator& operator -- () {
-          // <your code>
+          --_idx;
           assert(valid());
           return *this;
         }
@@ -482,8 +490,8 @@ class my_deque {
         /**
          * <your documentation>
          */
-        const_iterator& operator += (difference_type) {
-          // <your code>
+        const_iterator& operator += (difference_type d) {
+          _idx += d;
           assert(valid());
           return *this;
         }
@@ -495,8 +503,8 @@ class my_deque {
         /**
          * <your documentation>
          */
-        const_iterator& operator -= (difference_type) {
-          // <your code>
+        const_iterator& operator -= (difference_type d) {
+          _idx -= d;
           assert(valid());
           return *this;
         }
@@ -511,7 +519,6 @@ class my_deque {
      * <your documentation>
      */
     friend bool operator == (const my_deque& lhs, const my_deque& rhs) {
-      // TODO: Replace with const_iterators once they've been implemented
       return std::equal(lhs.begin(), lhs.end(), rhs.begin());
     }
 
@@ -625,8 +632,32 @@ class my_deque {
     /**
      * <your documentation>
      */
-    my_deque (const my_deque& that) {
-      // <your code>
+    my_deque (const my_deque& that) : _chunk_a(that._chunk_a) {
+
+      _table_size = (that.size() / CHUNK_SIZE);
+      if((that.size() % CHUNK_SIZE) != 0)
+        _table_size += 1;
+      //cout << "_table_size: " << _table_size << endl;
+      _table_p = _table_a.allocate(_table_size);
+      uninitialized_fill(_table_a, _table_p, _table_p + _table_size, pointer());
+
+      // Allocate chunks and map them into the table
+      for (size_type i = 0; i < _table_size; ++ i) {
+        //cout << "allocating chunk " << i << endl;
+        pointer _chunk_p = _chunk_a.allocate(CHUNK_SIZE);
+        uninitialized_fill(_chunk_a, _chunk_p, _chunk_p + CHUNK_SIZE, value_type());
+        _table_p[i] = _chunk_p;
+      }
+
+      _b_table_idx = 0;
+      _b_chunk_idx = 0;
+
+      _b = iterator(this, 0);
+      _e = iterator(this, that.size());
+      _l = iterator(this, _table_size * CHUNK_SIZE);
+
+      std::copy(that.begin(), that.end(), begin());
+/*
       _table_size = (that.size() / CHUNK_SIZE);
       if((that.size() % CHUNK_SIZE) != 0 || (that.size() == 0)) 
         _table_size++;
@@ -669,6 +700,7 @@ class my_deque {
       _l = iterator(this, that.size() + 1);
 
       // uninitialized_copy(_chunk_a, that.begin(), that.end(), begin());
+*/
       assert(valid());
     }
 
@@ -796,19 +828,14 @@ class my_deque {
      * <your documentation>
      */
     iterator begin () {
-      // <your code>
-      // return iterator(/* <your arguments> */);
-      return _b;
+      return iterator(_b);
     }
 
     /**
      * <your documentation>
      */
     const_iterator begin () const {
-      // <your code>
-      return const_iterator(this, 0);
-      // typename my_deque::const_iterator b = (*this).begin();
-      return b;
+      return const_iterator(_b);
     }
 
     // -----
@@ -849,8 +876,7 @@ class my_deque {
      * <your documentation>
      */
     const_iterator end () const {
-      // <your code>
-      return const_iterator(/* <your arguments> */);
+      return const_iterator(_e);
     }
 
     // -----
