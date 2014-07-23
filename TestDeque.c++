@@ -187,7 +187,7 @@ TYPED_TEST(TestDeque, Size_2) {
   ASSERT_EQ(32, s);
 }
 
-TYPED_TEST(TestDeque, Size_3) {
+TYPED_TEST(TestDeque, PushBack_1) {
   typedef typename TestFixture::deque_type      deque_type;
   typedef typename TestFixture::allocator_type  allocator_type;
   typedef typename TestFixture::value_type      value_type;
@@ -199,9 +199,9 @@ TYPED_TEST(TestDeque, Size_3) {
   typedef typename TestFixture::const_reference const_reference;
 
   deque_type x(10);
-  cout << "Size_3 size: " << x.size() << endl;
+  //cout << "Size_3 size: " << x.size() << endl;
   for (int i = 10; i < 15; ++i) {
-    cout << "Size 3: pushing value: " << i << endl;
+    //cout << "Size 3: pushing value: " << i << endl;
     x.push_back(i);
     ASSERT_EQ(x[i], i);
 
@@ -603,10 +603,10 @@ TYPED_TEST(TestDeque, Resize_1) {
   typedef typename TestFixture::const_pointer   const_pointer;
   typedef typename TestFixture::reference       reference;
   typedef typename TestFixture::const_reference const_reference;
+
   deque_type x(10);
-  //x[0] = 0, x[1] = 1, x[2] = 2
   for(int i = 10; i < 15; ++i) {
-    cout << "pushing: " << i << endl;
+    //cout << "pushing: " << i << endl;
     x.push_back(10);
     ASSERT_EQ(x[i], 10);
   }
@@ -615,7 +615,7 @@ TYPED_TEST(TestDeque, Resize_1) {
     x.push_back(15);
   }
 
-  ASSERT_EQ(x[10], 15);
+  ASSERT_EQ(x[10], 10);
 }
 
 

@@ -569,12 +569,13 @@ class my_deque {
     /**
      * Default Constructor: An Empty Deque
      */
-    explicit my_deque (const allocator_type& a = allocator_type()) {
-      my_deque(0, value_type(), a);
-      _table_size = 0;
-      _b_table_idx = 0;
-      _b_chunk_idx = 0;
-      cout << "_b_table_idx: " << _b_table_idx << endl;
+    explicit my_deque (const allocator_type& a = allocator_type()) 
+      : my_deque(0, value_type(), a)
+    {
+      assert(size() == 0);
+      assert(_table_size == 0);
+      assert(_b_table_idx == 0);
+      assert(_b_chunk_idx == 0);
       assert(valid());
     }
 
@@ -655,13 +656,13 @@ class my_deque {
      * @return An l-val reference to the element
      */
     reference operator [] (size_type index) {
-      cout << "subscript(" << index << ")" << endl;
+      // cout << "subscript(" << index << ")" << endl;
       size_type table_offset = index / CHUNK_SIZE;
       size_type chunk_offset = index % CHUNK_SIZE;
 
-      cout << "table offset, chunk_offset: " << "(" << table_offset << ", " << chunk_offset << ")" << endl;
+      // cout << "table offset, chunk_offset: " << "(" << table_offset << ", " << chunk_offset << ")" << endl;
 
-      cout << "_b_table_idx: " << _b_table_idx << endl;
+      // cout << "_b_table_idx: " << _b_table_idx << endl;
       size_type table_idx = _b_table_idx + table_offset;
       size_type chunk_idx = _b_chunk_idx + chunk_offset;
 
@@ -670,7 +671,7 @@ class my_deque {
         ++table_idx;
       }
 
-      cout << "table index, chunk index: " << "(" << table_idx << ", " << chunk_idx << ")" << endl;
+      // cout << "table index, chunk index: " << "(" << table_idx << ", " << chunk_idx << ")" << endl;
 
       return _table_p[table_idx][chunk_idx]; 
     }
@@ -860,19 +861,19 @@ class my_deque {
      * <your documentation>
      */
     void push_back (const_reference v) {
-      cout << "entering push_back" << endl;
-      cout << "_e: " << _e._idx << endl;
-      cout << "-l: " << _l._idx << endl;
+      //cout << "entering push_back" << endl;
+      //cout << "_e: " << _e._idx << endl;
+      //cout << "-l: " << _l._idx << endl;
       if(_e == _l) {
-        cout << "expansion needed." << endl;
+        //cout << "expansion needed." << endl;
         resize(size() + 1);
         *(_e - 1) = v;
-        cout << "resized complete" << endl;
+        //cout << "resized complete" << endl;
       }
       else {
-        cout << "none" << endl;
+        //cout << "none" << endl;
         *_e = v;
-        cout << "none1" << endl;
+        //cout << "none1" << endl;
         _e++;
       }
       assert(valid());
@@ -894,47 +895,40 @@ class my_deque {
      * <your documentation>
      */
     void resize (size_type s, const_reference v = value_type()) {
-      cout << "Entering resize()" << endl;
-      cout << "size : " << s << " current size: " << size() << endl;
+      //cout << "Entering resize()" << endl;
+      //cout << "size : " << s << " current size: " << size() << endl;
       //cout << "_b_table_idx: " << _b_table_idx << endl;
       T** tmp = _table_p;
 
       _table_size = (s / CHUNK_SIZE);
       if((s % CHUNK_SIZE) != 0)
         _table_size++;
-      cout << "new size: " << _table_size << endl;
+      //cout << "new size: " << _table_size << endl;
       _table_p = _table_a.allocate(_table_size);
       uninitialized_fill(_table_a, _table_p, _table_p + _table_size, pointer());
       assert(_table_p[0] == 0x0);
 
-      cout << "here" << endl;
+      //cout << "here" << endl;
       if(size() != 0) {
         std::copy(tmp, tmp + _table_size - 1, _table_p);
       }
 
       pointer _chunk_p = _chunk_a.allocate(CHUNK_SIZE); 
-      cout << "new entry allocated" << endl;
-
+      //cout << "new entry allocated" << endl;
 
       uninitialized_fill(_chunk_a, _chunk_p, _chunk_p + CHUNK_SIZE, v);
       _table_p[_table_size - 1] = _chunk_p;
-      cout << "assert" << endl;
+      //cout << "assert" << endl;
       ASSERT_EQ((*_table_p)[0], *_chunk_p);
-      cout << "assert2" << endl;
+      //cout << "assert2" << endl;
       ASSERT_EQ((*_table_p)[1], v);
       ASSERT_EQ((*_table_p)[CHUNK_SIZE - 1], v);
-
-      //_b_table_idx = 0;
-      //_b_chunk_idx = 0;
-
-      cout << "_b_table_idx: " << _b_table_idx << endl;
 
       // _b = iterator(this, 0);
       _l += CHUNK_SIZE;
       _e += s - size();
-      cout << "e's index: " << _e._idx << endl;
+      //cout << "e's index: " << _e._idx << endl;
       assert(valid());
-
     }
     
 
