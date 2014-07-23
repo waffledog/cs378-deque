@@ -52,7 +52,10 @@ template <typename A, typename II, typename BI>
 BI uninitialized_copy (A& a, II b, II e, BI x) {
   BI p = x;
   try {
+    cout << "entering copy" << endl;
+    cout << "*b: " << *b << " *e: " << *(--e) << endl;
     while (b != e) {
+      cout << "&*x: " << &*x << " *b: " << *b << endl;
       a.construct(&*x, *b);
       ++b;
       ++x;
@@ -624,6 +627,48 @@ class my_deque {
      */
     my_deque (const my_deque& that) {
       // <your code>
+      _table_size = (that.size() / CHUNK_SIZE);
+      if((that.size() % CHUNK_SIZE) != 0 || (that.size() == 0)) 
+        _table_size++;
+      _table_p = _table_a.allocate(_table_size);
+      uninitialized_fill(_table_a, _table_p, _table_p + _table_size, pointer());
+      size_type idx = 0;
+      size_type i = 0;
+      while(idx < that.size()) {
+        if(idx + CHUNK_SIZE - 1 <= that.size()) {
+          cout << "here" << endl;
+          pointer _chunk_p = _chunk_a.allocate(CHUNK_SIZE);
+          cout << "that begin: " << *that.begin() + idx << endl;
+          cout << "that begin: " << *that.begin() + idx + CHUNK_SIZE << endl;
+          uninitialized_copy(_chunk_a, that.begin() + idx, that.begin() + idx + CHUNK_SIZE, _chunk_p);
+          // std::copy(that.begin() + i, that.begin() + CHUNK_SIZE, _chunk_p);
+          // iterator b = that.begin();
+          // std::copy(tmp, tmp + _table_size, _table_p);
+          // uninitialized_copy(_chunk_a, _chunk_p, _chunk_p + CHUNK_SIZE, that.begin() + idx);
+          // uninitialized_copy(_chunk_a, b, b + CHUNK_SIZE, _chunk_p);
+          cout << "_chunk_p[i]: " << _chunk_p[0] << endl;
+          _table_p[i] = _chunk_p;
+          idx += CHUNK_SIZE;
+          i++;
+        }
+        else {
+          cout << "else here" << endl;
+          size_type idx_r = that.size() / CHUNK_SIZE;
+          pointer _chunk_p = _chunk_a.allocate(idx_r);
+          uninitialized_copy(_chunk_a, that.begin() + idx, that.begin() + idx + idx_r, _chunk_p);
+          idx += idx_r;
+        }
+      }
+
+
+      _b_table_idx = 0;
+      _b_chunk_idx = 0;
+
+      _b = iterator(this, 0);
+      _e = iterator(this, that.size());
+      _l = iterator(this, that.size() + 1);
+
+      // uninitialized_copy(_chunk_a, that.begin(), that.end(), begin());
       assert(valid());
     }
 
@@ -761,7 +806,9 @@ class my_deque {
      */
     const_iterator begin () const {
       // <your code>
-      return const_iterator(/* <your arguments> */);
+      return const_iterator(this, 0);
+      // typename my_deque::const_iterator b = (*this).begin();
+      return b;
     }
 
     // -----
@@ -915,8 +962,8 @@ class my_deque {
      * <your documentation>
      */
     void resize (size_type s, const_reference v = value_type()) {
-      cout << "Entering resize()" << endl;
-      cout << "Requested size : " << s << " current size: " << size() << endl;
+      // cout << "Entering resize()" << endl;
+      // cout << "Requested size : " << s << " current size: " << size() << endl;
 
       // CASE I: Requested size is exactly existing size
       if (s == size()) {
@@ -966,7 +1013,7 @@ class my_deque {
       }
       assert(valid());
       // printChunkTable();
-      cout << "Leaving Resize()" << endl;
+      // cout << "Leaving Resize()" << endl;
     }
     
     // TODO: COMMENT OUT AFTER DEV
@@ -998,18 +1045,23 @@ class my_deque {
     /**
      * <your documentation>
      */
-    void swap (my_deque&) {
+    void swap (my_deque& that) {
       // <your code>
+      if(_chunk_a == that._chunk_a) {
+        cout << "same allocator" << endl;
+        std::swap(_b, that._b);
+        cout << "x._b: " << *_b << " y._b: " << *that._b << endl;
+        std::swap(_e, that._e);
+        cout << "x._e: " << *(_e - 1) << " y._b: " << *(that._e - 1) << endl;
+        std::swap(_l, that._l);
+      }
+      else {
+        my_deque x(*this);
+        *this = that;
+        that = x;
+      }
       assert(valid());
     }
-
-
-
-
-
-
-
-
 };
 
 #endif // Deque_h

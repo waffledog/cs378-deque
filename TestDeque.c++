@@ -671,9 +671,9 @@ TYPED_TEST(TestDeque, Resize_3) {
   ASSERT_EQ(x.size(), 1);
   x.resize(25);
   ASSERT_EQ(x.size(), 25);
-  cout << "here1" << endl;
+  // cout << "here1" << endl;
   x[0] = 5;
-  cout << "here2" << endl;
+  // cout << "here2" << endl;
   ASSERT_EQ(x[0], 5);
 }
 
@@ -713,4 +713,61 @@ TYPED_TEST(TestDeque, Resize_5) {
   x.resize(1);
   ASSERT_EQ(x.size(), 1);
   ASSERT_EQ(x[0], 5);
+}
+
+// TYPED_TEST(TestDeque, Swap_1) {
+//   typedef typename TestFixture::deque_type      deque_type;
+//   typedef typename TestFixture::allocator_type  allocator_type;
+//   typedef typename TestFixture::value_type      value_type;
+//   typedef typename TestFixture::size_type       size_type;
+//   typedef typename TestFixture::difference_type difference_type;
+//   typedef typename TestFixture::pointer         pointer;
+//   typedef typename TestFixture::const_pointer   const_pointer;
+//   typedef typename TestFixture::reference       reference;
+//   typedef typename TestFixture::const_reference const_reference;
+
+//   deque_type x;
+//   for(int i = 0; i < 10; ++i) {
+//     x.push_back(i);
+//     ASSERT_EQ(x[i], i);
+//   }
+
+//   deque_type y;
+//   int z = 0;
+//   for(int j = 9; j >= 0; --j) {
+//     y.push_back(j);
+//     ASSERT_EQ(y[z++], j);
+//   }
+//   x.swap(y);
+
+//   ASSERT_EQ(x[0], 9);
+// }
+
+TYPED_TEST(TestDeque, Copy_1) {
+  typedef typename TestFixture::deque_type      deque_type;
+  typedef typename TestFixture::allocator_type  allocator_type;
+  typedef typename TestFixture::value_type      value_type;
+  typedef typename TestFixture::size_type       size_type;
+  typedef typename TestFixture::difference_type difference_type;
+  typedef typename TestFixture::pointer         pointer;
+  typedef typename TestFixture::const_pointer   const_pointer;
+  typedef typename TestFixture::reference       reference;
+  typedef typename TestFixture::const_reference const_reference;
+  deque_type x; 
+  for(int i = 0; i < 10; ++i) {
+    x.push_back(i);
+    ASSERT_EQ(x[i], i);
+  }
+  deque_type y = x;
+  // cout << "x[0]: " << y[0] << endl;
+  // cout << "x[1]: " << y[1] << endl;
+  // cout << "x[2]: " << y[2] << endl;
+  // cout << "x[3]: " << y[3] << endl;
+  // cout << "x[4]: " << x[4] << endl;
+  // cout << "x[5]: " << x[5] << endl;
+  // cout << "x[6]: " << x[6] << endl;
+  // cout << "x[7]: " << x[7] << endl;
+  // cout << "x[8]: " << x[8] << endl;
+  // cout << "x[9]: " << x[9] << endl;
+
 }
