@@ -618,6 +618,8 @@ TYPED_TEST(TestDeque, Resize_1) {
   ASSERT_EQ(x[10], 15);
 }
 
+
+
 TYPED_TEST(TestDeque, Resize_2) {
   typedef typename TestFixture::deque_type      deque_type;
   typedef typename TestFixture::allocator_type  allocator_type;
@@ -639,9 +641,24 @@ TYPED_TEST(TestDeque, Resize_2) {
   x.resize(11);
   ASSERT_EQ(x.size(), 11);
   ASSERT_EQ(x[0], 5);
-
-
 }
 
+TYPED_TEST(TestDeque, Resize_3) {
+  typedef typename TestFixture::deque_type      deque_type;
+  typedef typename TestFixture::allocator_type  allocator_type;
+  typedef typename TestFixture::value_type      value_type;
+  typedef typename TestFixture::size_type       size_type;
+  typedef typename TestFixture::difference_type difference_type;
+  typedef typename TestFixture::pointer         pointer;
+  typedef typename TestFixture::const_pointer   const_pointer;
+  typedef typename TestFixture::reference       reference;
+  typedef typename TestFixture::const_reference const_reference;
 
-
+  deque_type x; 
+  x.resize(25);
+  ASSERT_EQ(x.size(), 25);
+  cout << "here1" << endl;
+  x[0] = 5;
+  cout << "here2" << endl;
+  ASSERT_EQ(x[0], 5);
+}
