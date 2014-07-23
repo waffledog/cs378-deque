@@ -909,10 +909,14 @@ class my_deque {
         return;
       }
 
+      size_type new_table_size = (s / CHUNK_SIZE);
+      if((s % CHUNK_SIZE) != 0 || (size() == 0))
+        new_table_size++;
+
       // CASE II: Requested size is smaller than existing size
       if (s < size()) {
-        assert(false);
-        // TODO: Will need to do some destruction.
+        _e = _b + s; 
+        // TODO: Is it ok we don't destroy anything? I think so.
       }
 
       // CASE III: Requested size is greater than existing size but smaller than capacity
@@ -921,22 +925,14 @@ class my_deque {
       }
 
       // CASE IV: Requested size is greater than existing capacity
-      // TODO: Handle this case where its so much greater one more chunk wont be enough
       else {
-        cout << "Case IV" << endl;
         T** tmp = _table_p;
-        size_type new_table_size = (s / CHUNK_SIZE);
-        if((s % CHUNK_SIZE) != 0 || (size() == 0))
-          new_table_size++;
-
         // Allocate a new chunk table
         _table_p = _table_a.allocate(new_table_size);
         uninitialized_fill(_table_a, _table_p, _table_p + new_table_size, pointer());
 
         // Copy in the old chunk table
-        if(size() != 0) { // TODO: Try to get rid of this if statement
-          std::copy(tmp, tmp + _table_size, _table_p);
-        }
+        std::copy(tmp, tmp + _table_size, _table_p);
 
         // Add necessary additional chunks and map them into the chunk table 
         size_type num_new_chunks = new_table_size - _table_size;
@@ -952,7 +948,7 @@ class my_deque {
         //cout << "e's index: " << _e._idx << endl;
       }
       assert(valid());
-      printChunkTable();
+      // printChunkTable();
       cout << "Leaving Resize()" << endl;
     }
     

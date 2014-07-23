@@ -199,19 +199,21 @@ TYPED_TEST(TestDeque, PushBack_1) {
   typedef typename TestFixture::const_reference const_reference;
 
   deque_type x(10);
-  //cout << "PushBack_1: " << x.size() << endl;
   for (int i = 10; i < 15; ++i) {
-    cout << "PushBack_1: pushing value: " << i << endl;
     x.push_back(i);
     ASSERT_EQ(x[i], i);
-
-    // x.push_front(i);
   }
   const size_type s = x.size();
   ASSERT_EQ(15, s);
 }
 
 TYPED_TEST(TestDeque, Constructor_1) {
+  typedef typename TestFixture::deque_type      deque_type;
+  deque_type x;
+  ASSERT_EQ(x.size(), 0);
+}
+
+TYPED_TEST(TestDeque, Constructor_2) {
   typedef typename TestFixture::deque_type      deque_type;
   deque_type x(56);
 }
@@ -691,5 +693,24 @@ TYPED_TEST(TestDeque, Resize_4) {
   x.resize(94);
   ASSERT_EQ(x.size(), 94);
   x[0] = 5;
+  ASSERT_EQ(x[0], 5);
+}
+
+TYPED_TEST(TestDeque, Resize_5) {
+  typedef typename TestFixture::deque_type      deque_type;
+  typedef typename TestFixture::allocator_type  allocator_type;
+  typedef typename TestFixture::value_type      value_type;
+  typedef typename TestFixture::size_type       size_type;
+  typedef typename TestFixture::difference_type difference_type;
+  typedef typename TestFixture::pointer         pointer;
+  typedef typename TestFixture::const_pointer   const_pointer;
+  typedef typename TestFixture::reference       reference;
+  typedef typename TestFixture::const_reference const_reference;
+
+  deque_type x(337); 
+  x[0] = 5;
+  ASSERT_EQ(x.size(), 337);
+  x.resize(1);
+  ASSERT_EQ(x.size(), 1);
   ASSERT_EQ(x[0], 5);
 }
