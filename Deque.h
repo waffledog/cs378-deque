@@ -898,32 +898,52 @@ class my_deque {
       cout << "Entering resize()" << endl;
       cout << "Requested size : " << s << " current size: " << size() << endl;
 
-      T** tmp = _table_p;
-      _table_size = (s / CHUNK_SIZE);
-      if((s % CHUNK_SIZE) != 0 || (size() == 0))
-        _table_size++;
-
-      //cout << "new size: " << _table_size << endl;
-      _table_p = _table_a.allocate(_table_size);
-      uninitialized_fill(_table_a, _table_p, _table_p + _table_size, pointer());
-
-      //cout << "here" << endl;
-      if(size() != 0) {
-        std::copy(tmp, tmp + _table_size - 1, _table_p);
+      // CASE I: Requested size is exactly existing size
+      if (s == size()) {
+        return;
       }
 
-      pointer _chunk_p = _chunk_a.allocate(CHUNK_SIZE); 
-      //cout << "new entry allocated" << endl;
-      cout << "v is " << v << endl;
-      uninitialized_fill(_chunk_a, _chunk_p, _chunk_p + CHUNK_SIZE, v);
-      _table_p[_table_size - 1] = _chunk_p;
-      //cout << "assert" << endl;
-      //cout << "assert2" << endl;
+      // CASE II: Requested size is smaller than existing size
+      if (s < size()) {
+        assert(false);
+        // TODO: Will need to do some destruction.
+      }
 
-      // _b = iterator(this, 0);
-      _l += CHUNK_SIZE;
-      _e += s - size();
-      //cout << "e's index: " << _e._idx << endl;
+      // CASE III: Requested size is greater than existing size but smaller than capacity
+      else if (s < _l._idx) {
+        _e = uninitialized_fill(_chunk_a, end(), begin() + s, v);
+      }
+
+      // CASE IV: Requested size is greater than existing capacity
+      // TODO: Handle this case where its so much greater one more chunk wont be enough
+      else {
+        T** tmp = _table_p;
+        _table_size = (s / CHUNK_SIZE);
+        if((s % CHUNK_SIZE) != 0 || (size() == 0))
+          _table_size++;
+
+        //cout << "new size: " << _table_size << endl;
+        _table_p = _table_a.allocate(_table_size);
+        uninitialized_fill(_table_a, _table_p, _table_p + _table_size, pointer());
+
+        //cout << "here" << endl;
+        if(size() != 0) {
+          std::copy(tmp, tmp + _table_size - 1, _table_p);
+        }
+
+        pointer _chunk_p = _chunk_a.allocate(CHUNK_SIZE); 
+        //cout << "new entry allocated" << endl;
+        cout << "v is " << v << endl;
+        uninitialized_fill(_chunk_a, _chunk_p, _chunk_p + CHUNK_SIZE, v);
+        _table_p[_table_size - 1] = _chunk_p;
+        //cout << "assert" << endl;
+        //cout << "assert2" << endl;
+
+        // _b = iterator(this, 0);
+        _l += CHUNK_SIZE;
+        _e += s - size();
+        //cout << "e's index: " << _e._idx << endl;
+      }
       assert(valid());
       printChunkTable();
       cout << "Leaving Resize()" << endl;
