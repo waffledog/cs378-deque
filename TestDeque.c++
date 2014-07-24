@@ -43,6 +43,7 @@ To obtain coverage of the test:
 #include <sstream>   // ostringstream
 #include <stdexcept> // invalid_argument
 #include <string>    // ==
+#include <cassert>
 
 #include "gtest/gtest.h"
 
@@ -115,12 +116,12 @@ TYPED_TEST(TestDeque, EqualEqual_2) {
 
   deque_type x(40);
   deque_type y(40);
-  const deque_type z(x);
+  
   for (int i = 0; i < 40; ++i) {
     x[i] = 33;
     y[i] = 33;
   }
-
+  const deque_type z(x);
   ASSERT_EQ(x, y);
   ASSERT_EQ(x, z);
 }
