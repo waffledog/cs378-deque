@@ -927,10 +927,11 @@ class my_deque {
     // ---
 
     /**
-     * <your documentation>
+     * Removes the last element of the deque. 
      */
     void pop_back () {
-      // <your code>
+      assert(!empty());
+      resize(size() - 1);
       assert(valid());
     }
 
@@ -947,32 +948,28 @@ class my_deque {
     // ----
 
     /**
-     * <your documentation>
+     * Appends the given element value to the end of the deque. 
+     * @param v The element value
+     * @return void
      */
     void push_back (const_reference v) {
-      //cout << "entering push_back" << endl;
-      //cout << "_e: " << _e._idx << endl;
-      //cout << "-l: " << _l._idx << endl;
       if(_e == _l) {
-        //cout << "expansion needed." << endl;
         resize(size() + 1);
         *(_e - 1) = v;
-        //cout << "resized complete" << endl;
       }
       else {
-        //cout << "none" << endl;
         *_e = v;
-        //cout << "none1" << endl;
         _e++;
       }
       assert(valid());
     }
 
     /**
-     * <your documentation>
+     * Appends the given element value to the front of the deque. 
+     * @param v The element value
+     * @return void
      */
     void push_front (const_reference v) {
-      // <your code>
       if(_b_table_idx == 0 && _b_chunk_idx == 0) {
         T** tmp = _table_p;
         _table_p = _table_a.allocate(size() + 1);
