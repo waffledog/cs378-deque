@@ -519,6 +519,8 @@ class my_deque {
      * <your documentation>
      */
     friend bool operator == (const my_deque& lhs, const my_deque& rhs) {
+
+      cout << "equality" << endl;
       return std::equal(lhs.begin(), lhs.end(), rhs.begin());
     }
 
@@ -634,6 +636,7 @@ class my_deque {
      * <your documentation>
      */
     my_deque (const my_deque& that) : _chunk_a(that._chunk_a) {
+      cout << "copy" << endl;
 
       _table_size = (that.size() / CHUNK_SIZE);
       if((that.size() % CHUNK_SIZE) != 0)
@@ -1083,13 +1086,17 @@ class my_deque {
     // ----
     // swap
     // ----
-
     /**
      * Exchanges the contents of this deque with those of other. 
      * Does not invoke any move, copy, or swap operations on individual elements.
      */
     void swap (my_deque& that) {
       if(_chunk_a == that._chunk_a) {
+        std::swap(_table_a, that._table_a);
+        std::swap(_table_p, that._table_p);
+        std::swap(_table_size, that._table_size);
+        std::swap(_b_table_idx, that._b_table_idx);
+        std::swap(_b_chunk_idx, that._b_chunk_idx);
         std::swap(_b._idx, that._b._idx);
         std::swap(_b._d, that._b._d);
         std::swap(_e._idx, that._e._idx);
@@ -1098,11 +1105,13 @@ class my_deque {
         std::swap(_l._d, that._l._d);
 
 
-        std::swap(_table_a, that._table_a);
-        std::swap(_table_p, that._table_p);
-        std::swap(_table_size, that._table_size);
-        std::swap(_b_table_idx, that._b_table_idx);
-        std::swap(_b_chunk_idx, that._b_chunk_idx);
+        
+        // std::swap(_table_size, that._table_size);
+        // std::swap(_table_p, that._table_p);
+        // std::swap(_b, that._b);
+        // std::swap(_e, that._e);
+        // std::swap(_l, that._l);
+        
       }
       else {
         my_deque x(*this);
