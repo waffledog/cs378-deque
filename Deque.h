@@ -988,6 +988,10 @@ class my_deque {
         _table_p[0] = _chunk_p;
         _b_table_idx = 0;
         _b_chunk_idx = CHUNK_SIZE - 1;
+
+        // Destroy and Deallocate the old table
+        destroy(_table_a, tmp, tmp + _table_size - 1);
+        _table_a.deallocate(tmp, _table_size - 1);
       }
       else {
         if(--_b_chunk_idx < 0) {
