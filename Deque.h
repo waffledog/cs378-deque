@@ -658,50 +658,6 @@ class my_deque {
       _l = iterator(this, _table_size * CHUNK_SIZE);
 
       std::copy(that.begin(), that.end(), begin());
-/*
-      _table_size = (that.size() / CHUNK_SIZE);
-      if((that.size() % CHUNK_SIZE) != 0 || (that.size() == 0)) 
-        _table_size++;
-      _table_p = _table_a.allocate(_table_size);
-      uninitialized_fill(_table_a, _table_p, _table_p + _table_size, pointer());
-      size_type idx = 0;
-      size_type i = 0;
-      while(idx < that.size()) {
-        if(idx + CHUNK_SIZE - 1 <= that.size()) {
-          cout << "here" << endl;
-          pointer _chunk_p = _chunk_a.allocate(CHUNK_SIZE);
-          cout << "that begin: " << *that.begin() + idx << endl;
-          cout << "that begin: " << *that.begin() + idx + CHUNK_SIZE << endl;
-          uninitialized_copy(_chunk_a, that.begin() + idx, that.begin() + idx + CHUNK_SIZE, _chunk_p);
-          // std::copy(that.begin() + i, that.begin() + CHUNK_SIZE, _chunk_p);
-          // iterator b = that.begin();
-          // std::copy(tmp, tmp + _table_size, _table_p);
-          // uninitialized_copy(_chunk_a, _chunk_p, _chunk_p + CHUNK_SIZE, that.begin() + idx);
-          // uninitialized_copy(_chunk_a, b, b + CHUNK_SIZE, _chunk_p);
-          cout << "_chunk_p[i]: " << _chunk_p[0] << endl;
-          _table_p[i] = _chunk_p;
-          idx += CHUNK_SIZE;
-          i++;
-        }
-        else {
-          cout << "else here" << endl;
-          size_type idx_r = that.size() / CHUNK_SIZE;
-          pointer _chunk_p = _chunk_a.allocate(idx_r);
-          uninitialized_copy(_chunk_a, that.begin() + idx, that.begin() + idx + idx_r, _chunk_p);
-          idx += idx_r;
-        }
-      }
-
-
-      _b_table_idx = 0;
-      _b_chunk_idx = 0;
-
-      _b = iterator(this, 0);
-      _e = iterator(this, that.size());
-      _l = iterator(this, that.size() + 1);
-
-      // uninitialized_copy(_chunk_a, that.begin(), that.end(), begin());
-*/
       assert(valid());
     }
 
@@ -710,7 +666,7 @@ class my_deque {
     // ----------
 
     /**
-     * <your documentation>
+     * Deque destructor. Frees all allocated memory. 
      */
     ~my_deque () {
       // Destroy and Deallocate every chunk
@@ -736,10 +692,38 @@ class my_deque {
     // ----------
 
     /**
-     * <your documentation>
+     * Copy Assignment. Make this deque identical to the given deque. 
      */
     my_deque& operator = (const my_deque& rhs) {
-      // <your code>
+
+      // CASE I: This is That
+      if (this == &rhs) {
+        return *this;
+      }
+
+      // CASE II: This is same size as rhs
+      if (size() == rhs.size()) {
+        std::copy(rhs.begin(), rhs.end(), begin());
+      }
+
+      // CASE III: Everything Else
+      else {
+        resize(rhs.size());  
+        std::copy(rhs.begin(), rhs.end(), begin());
+      } 
+
+      /*
+      // CASE III: Rhs is smaller than this
+      else if (size() > rhs.size()) {
+        resize(rhs.size());
+        std::copy(rhs.begin(), rhs.end(), begin());
+      }
+    
+      // CASE IV: Rhs is bigger than this, but no allocation needed
+      else if (rhs.size() <= capacity()) {
+      }
+      */
+
       assert(valid());
       return *this;
     }
@@ -815,7 +799,7 @@ class my_deque {
     }
 
     /**
-     * <your documentation>
+     * Return a non-modifiable reference to the last element of this deque. 
      */
     const_reference back () const {
       return const_cast<my_deque*>(this)->back();
@@ -844,10 +828,10 @@ class my_deque {
     // -----
 
     /**
-     * <your documentation>
+     * Remove all elements from this deque. 
      */
     void clear () {
-      // <your code>
+      resize(0);
       assert(valid());
     }
 
@@ -885,10 +869,14 @@ class my_deque {
     // -----
 
     /**
-     * <your documentation>
+     * Removes the element at the position indicated by the given iterator. 
      */
-    iterator erase (iterator) {
-      // <your code>
+    iterator erase (iterator i) {
+      while(i != _e - 1) {
+        *i = *(i + 1);  
+        ++i;
+      }
+      --_e;
       assert(valid());
       return iterator();
     }
@@ -898,17 +886,15 @@ class my_deque {
     // -----
 
     /**
-     * <your documentation>
+     * Returns a reference to the first element in the deque. 
      */
     reference front () {
-      // <your code>
-      // dummy is just to be able to compile the skeleton, remove it
-      static value_type dummy;
-      return dummy;
+      assert(!empty());
+      return *begin();
     }
 
     /**
-     * <your documentation>
+     * Returns a non-modifiable reference to the first element in the deque. 
      */
     const_reference front () const {
       return const_cast<my_deque*>(this)->front();
@@ -939,18 +925,25 @@ class my_deque {
     // ---
 
     /**
-     * <your documentation>
+     * Removes the last element of the deque. 
      */
     void pop_back () {
-      // <your code>
+      assert(!empty());
+      resize(size() - 1);
       assert(valid());
     }
 
     /**
-     * <your documentation>
+     * Removes the first element of this deque. 
      */
     void pop_front () {
-      // <your code>
+      ++_b_chunk_idx;
+      if (_b_chunk_idx > CHUNK_SIZE) {
+        _b_chunk_idx = 0;
+        ++_b_table_idx;
+      }
+      --_e;
+      --_l;
       assert(valid());
     }
 
@@ -959,32 +952,28 @@ class my_deque {
     // ----
 
     /**
-     * <your documentation>
+     * Appends the given element value to the end of the deque. 
+     * @param v The element value
+     * @return void
      */
     void push_back (const_reference v) {
-      //cout << "entering push_back" << endl;
-      //cout << "_e: " << _e._idx << endl;
-      //cout << "-l: " << _l._idx << endl;
       if(_e == _l) {
-        //cout << "expansion needed." << endl;
         resize(size() + 1);
         *(_e - 1) = v;
-        //cout << "resized complete" << endl;
       }
       else {
-        //cout << "none" << endl;
         *_e = v;
-        //cout << "none1" << endl;
         _e++;
       }
       assert(valid());
     }
 
     /**
-     * <your documentation>
+     * Appends the given element value to the front of the deque. 
+     * @param v The element value
+     * @return void
      */
     void push_front (const_reference v) {
-      // <your code>
       if(_b_table_idx == 0 && _b_chunk_idx == 0) {
         T** tmp = _table_p;
         _table_p = _table_a.allocate(size() + 1);
@@ -1085,12 +1074,10 @@ class my_deque {
     // ----
 
     /**
-     * <your documentation>
+     * Return the number of elements in this deque. 
      */
     size_type size () const {
-      // TODO: operator - for iterators
       return _e._idx - _b._idx;
-      // return 0;
     }
 
     // ----
@@ -1098,17 +1085,24 @@ class my_deque {
     // ----
 
     /**
-     * <your documentation>
+     * Exchanges the contents of this deque with those of other. 
+     * Does not invoke any move, copy, or swap operations on individual elements.
      */
     void swap (my_deque& that) {
-      // <your code>
       if(_chunk_a == that._chunk_a) {
-        cout << "same allocator" << endl;
-        std::swap(_b, that._b);
-        cout << "x._b: " << *_b << " y._b: " << *that._b << endl;
-        std::swap(_e, that._e);
-        cout << "x._e: " << *(_e - 1) << " y._b: " << *(that._e - 1) << endl;
-        std::swap(_l, that._l);
+        std::swap(_b._idx, that._b._idx);
+        std::swap(_b._d, that._b._d);
+        std::swap(_e._idx, that._e._idx);
+        std::swap(_e._d, that._e._d);
+        std::swap(_l._idx, that._l._idx);
+        std::swap(_l._d, that._l._d);
+
+
+        std::swap(_table_a, that._table_a);
+        std::swap(_table_p, that._table_p);
+        std::swap(_table_size, that._table_size);
+        std::swap(_b_table_idx, that._b_table_idx);
+        std::swap(_b_chunk_idx, that._b_chunk_idx);
       }
       else {
         my_deque x(*this);
