@@ -153,14 +153,18 @@ class my_deque {
         // -----------
 
         /**
-         * <your documentation>
+         * Compare two iterators for equality.
+         * @param lhs An iterator reference 
+         * @param rhs An iterator reference 
          */
         friend bool operator == (const iterator& lhs, const iterator& rhs) {
           return (lhs._d == rhs._d) && (lhs._idx == rhs._idx);
         }
 
         /**
-         * <your documentation>
+         * Compare two iterators for inequality.
+         * @param lhs An iterator reference 
+         * @param rhs An iterator reference 
          */
         friend bool operator != (const iterator& lhs, const iterator& rhs) {
           return !(lhs == rhs);
@@ -171,7 +175,10 @@ class my_deque {
         // ----------
 
         /**
-         * <your documentation>
+         * Increment this random access iterator by a given difference.
+         * @param lhs An iterator instance
+         * @param rhs Desired offset from the current position 
+         * @return An iterator to the element offset from the start point
          */
         friend iterator operator + (iterator lhs, difference_type rhs) {
           return lhs += rhs;
@@ -182,7 +189,10 @@ class my_deque {
         // ----------
 
         /**
-         * <your documentation>
+         * Decrement this random access iterator by a given difference.
+         * @param lhs An iterator instance
+         * @param rhs Desired offset from the current position 
+         * @return An iterator to the element offset from the start point
          */
         friend iterator operator - (iterator lhs, difference_type rhs) {
           return lhs -= rhs;
@@ -195,12 +205,13 @@ class my_deque {
 
         /**
          * Default constructor
-         * <your documentation>
          */
         iterator () : _d(NULL), _idx(0) {}
 
         /**
-         * <your documentation>
+         * Specified Constructor.
+         * @param d A pointer to the deque over which this iterates 
+         * @param i The virtual index into the deque where this iterator points 
          */
         iterator (my_deque* d, size_type i) :
           _d(d),
@@ -219,7 +230,8 @@ class my_deque {
         // ----------
 
         /**
-         * <your documentation>
+         * Return a reference to the element currently pointed to by this 
+         * iterator. 
          */
         reference operator * () const {
           return (*_d)[_idx];
@@ -230,7 +242,7 @@ class my_deque {
         // -----------
 
         /**
-         * <your documentation>
+         * Access members of the element to which this iterator points. 
          */
         pointer operator -> () const {
           return &**this;
@@ -241,17 +253,18 @@ class my_deque {
         // -----------
 
         /**
-         * <your documentation>
+         * Increment (Pre) where this iterator points by one position. 
+         * @return A reference to this iterator
          */
         iterator& operator ++ () {
-          // <your code>
           _idx++;
           assert(valid());
           return *this;
         }
 
         /**
-         * <your documentation>
+         * Increment (Post) where this iterator points by one position. 
+         * @return A reference to this iterator
          */
         iterator operator ++ (int) {
           iterator x = *this;
@@ -265,7 +278,8 @@ class my_deque {
         // -----------
 
         /**
-         * <your documentation>
+         * Decrement (Pre) where this iterator points by one position. 
+         * @return A reference to this iterator
          */
         iterator& operator -- () {
           --_idx;
@@ -274,7 +288,8 @@ class my_deque {
         }
 
         /**
-         * <your documentation>
+         * Decrement (Post) where this iterator points by one position. 
+         * @return A reference to this iterator
          */
         iterator operator -- (int) {
           iterator x = *this;
@@ -288,7 +303,9 @@ class my_deque {
         // -----------
 
         /**
-         * <your documentation>
+         * Increment where this iterator points by d position s. 
+         * @param d Positional offset to adjust this iterator by
+         * @return A reference to this iterator
          */
         iterator& operator += (difference_type d) {
           _idx += d;
@@ -301,7 +318,9 @@ class my_deque {
         // -----------
 
         /**
-         * <your documentation>
+         * Decrement where this iterator points by d position s. 
+         * @param d Positional offset to adjust this iterator by
+         * @return A reference to this iterator
          */
         iterator& operator -= (difference_type d) {
           _idx -= d;
@@ -1010,7 +1029,12 @@ class my_deque {
     // ------
 
     /**
-     * <your documentation>
+     * Resizes the deque to contain s elements. If the current size is 
+     * greater than s, the container is reduced to its first count 
+     * elements as if by repeatedly calling pop_back(). 
+     * @param s The desired new size of this container.
+     * @param v The value to assign elements if expanding size.
+     * @return void
      */
     void resize (size_type s, const_reference v = value_type()) {
       // cout << "Entering resize()" << endl;
@@ -1090,6 +1114,7 @@ class my_deque {
     // ----
     // swap
     // ----
+
     /**
      * Exchanges the contents of this deque with those of other. 
      * Does not invoke any move, copy, or swap operations on individual elements.
