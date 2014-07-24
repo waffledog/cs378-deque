@@ -869,10 +869,14 @@ class my_deque {
     // -----
 
     /**
-     * <your documentation>
+     * Removes the element at the position indicated by the given iterator. 
      */
-    iterator erase (iterator) {
-      // <your code>
+    iterator erase (iterator i) {
+      while(i != _e - 1) {
+        *i = *(i + 1);  
+        ++i;
+      }
+      --_e;
       assert(valid());
       return iterator();
     }
