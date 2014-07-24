@@ -372,14 +372,18 @@ class my_deque {
         // -----------
 
         /**
-         * <your documentation>
+         * Compare two const_iterators for equality.
+         * @param lhs An const_iterator reference 
+         * @param rhs An const_iterator reference 
          */
         friend bool operator == (const const_iterator& lhs, const const_iterator& rhs) {
           return (lhs._d == rhs._d) && (lhs._idx == rhs._idx);
         }
 
         /**
-         * <your documentation>
+         * Compare two const_iterators for inequality.
+         * @param lhs An const_iterator reference 
+         * @param rhs An const_iterator reference 
          */
         friend bool operator != (const const_iterator& lhs, const const_iterator& rhs) {
           return !(lhs == rhs);
@@ -390,7 +394,10 @@ class my_deque {
         // ----------
 
         /**
-         * <your documentation>
+         * Increment this const_iterator by a given difference.
+         * @param lhs An const_iterator instance
+         * @param rhs Desired offset from the current position 
+         * @return A const_iterator to the element offset from the start point
          */
         friend const_iterator operator + (const_iterator lhs, difference_type rhs) {
           return lhs += rhs;
@@ -401,7 +408,10 @@ class my_deque {
         // ----------
 
         /**
-         * <your documentation>
+         * Decrement this const_iterator by a given difference.
+         * @param lhs An const_iterator instance
+         * @param rhs Desired offset from the current position 
+         * @return A const_iterator to the element offset from the start point
          */
         friend const_iterator operator - (const_iterator lhs, difference_type rhs) {
           return lhs -= rhs;
@@ -439,7 +449,8 @@ class my_deque {
         // ----------
 
         /**
-         * <your documentation>
+         * Return a reference to the element currently pointed to by this 
+         * const_iterator. 
          */
         reference operator * () const {
           return (*_d)[_idx];
@@ -450,7 +461,8 @@ class my_deque {
         // -----------
 
         /**
-         * <your documentation>
+         * Access members of the element to which this const_iterator 
+         * points. 
          */
         pointer operator -> () const {
           return &**this;
@@ -461,7 +473,8 @@ class my_deque {
         // -----------
 
         /**
-         * <your documentation>
+         * Increment (Pre) where this const_iterator points by one position. 
+         * @return A reference to this const_iterator
          */
         const_iterator& operator ++ () {
           ++_idx;
@@ -470,7 +483,8 @@ class my_deque {
         }
 
         /**
-         * <your documentation>
+         * Decrement (Post) where this const_iterator points by one position. 
+         * @return A reference to this const_iterator
          */
         const_iterator operator ++ (int) {
           const_iterator x = *this;
@@ -484,7 +498,8 @@ class my_deque {
         // -----------
 
         /**
-         * <your documentation>
+         * Decrement (Pre) where this const_iterator points by one position. 
+         * @return A reference to this const_iterator
          */
         const_iterator& operator -- () {
           --_idx;
@@ -493,7 +508,8 @@ class my_deque {
         }
 
         /**
-         * <your documentation>
+         * Decrement (Post) where this const_iterator points by one position. 
+         * @return A reference to this const_iterator
          */
         const_iterator operator -- (int) {
           const_iterator x = *this;
@@ -507,7 +523,9 @@ class my_deque {
         // -----------
 
         /**
-         * <your documentation>
+         * Increment where this const_iterator points by d position s. 
+         * @param d Positional offset to adjust this const_iterator by
+         * @return A reference to this const_iterator
          */
         const_iterator& operator += (difference_type d) {
           _idx += d;
@@ -520,7 +538,9 @@ class my_deque {
         // -----------
 
         /**
-         * <your documentation>
+         * Decrement where this const_iterator points by d position s. 
+         * @param d Positional offset to adjust this const_iterator by
+         * @return A reference to this const_iterator
          */
         const_iterator& operator -= (difference_type d) {
           _idx -= d;
@@ -535,7 +555,9 @@ class my_deque {
     // -----------
 
     /**
-     * <your documentation>
+     * Compare two deques for equality.
+     * @param lhs A deque reference 
+     * @param rhs A deque reference 
      */
     friend bool operator == (const my_deque& lhs, const my_deque& rhs) {      
       return std::equal(lhs.begin(), lhs.end(), rhs.begin());
@@ -547,13 +569,12 @@ class my_deque {
     // ----------
 
     /**
-     * <your documentation>
+     * Compare if one deque is less a second.
+     * @param lhs A deque reference 
+     * @param rhs A deque reference 
      */
     friend bool operator < (const my_deque& lhs, const my_deque& rhs) {
-      // <your code>
       return std::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
-      // you must use std::lexicographical_compare()
-      // return true;
     }
 
   private:
@@ -651,7 +672,8 @@ class my_deque {
     }
 
     /**
-     * <your documentation>
+     * Copy Constructor.
+     * @param that The deque instance to copy 
      */
     my_deque (const my_deque& that) : _chunk_a(that._chunk_a) {
       cout << "copy" << endl;
@@ -781,7 +803,7 @@ class my_deque {
     }
 
     /**
-     * <your documentation>
+     * Get a const reference to the deque element at the given index. 
      */
     const_reference operator [] (size_type index) const {
       return const_cast<my_deque*>(this)->operator[](index);
@@ -792,7 +814,8 @@ class my_deque {
     // --
 
     /**
-     * <your documentation>
+     * Get a reference to the deque element at the given index. 
+     * @throws out_of_range exception if the index is out of bounds
      */
     reference at (size_type index) {
       if(index >= size())
@@ -801,7 +824,8 @@ class my_deque {
     }
 
     /**
-     * <your documentation>
+     * Get a const_reference to the deque element at the given index. 
+     * @throws out_of_range exception if the index is out of bounds
      */
     const_reference at (size_type index) const {
       return const_cast<my_deque*>(this)->at(index);
@@ -832,14 +856,14 @@ class my_deque {
     // -----
 
     /**
-     * <your documentation>
+     * Return an iterator to the beginning of this deque.
      */
     iterator begin () {
       return iterator(_b);
     }
 
     /**
-     * <your documentation>
+     * Return a const_iterator to the beginning of this deque.
      */
     const_iterator begin () const {
       return const_iterator(_b);
@@ -862,7 +886,7 @@ class my_deque {
     // -----
 
     /**
-     * <your documentation>
+     * Determine if this elements has no elements. 
      */
     bool empty () const {
       return !size();
@@ -873,14 +897,14 @@ class my_deque {
     // ---
 
     /**
-     * <your documentation>
+     * Return an iterator to the end of this deque.
      */
     iterator end () {
       return iterator(_e);
     }
 
     /**
-     * <your documentation>
+     * Return an const_iterator to the end of this deque.
      */
     const_iterator end () const {
       return const_iterator(_e);
@@ -927,10 +951,12 @@ class my_deque {
     // ------
 
     /**
-     * <your documentation>
+     * Insert the a value before the location pointed to by the given iterator
+     * @param i An iterator specifying the insert position.
+     * @param v The element to insert
+     * @return An iterator pointing to the inserted value
      */
     iterator insert (iterator i, const_reference v) {
-      // <your code>
       resize(size() + 1); 
       iterator e = end();
       while(--e != i) {
