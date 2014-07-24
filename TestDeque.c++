@@ -490,7 +490,37 @@ TYPED_TEST(TestDeque, Pop_Back_2) {
   ASSERT_TRUE(x.empty());
 }
 
-// TODO: Test Deque pop_front() 
+TYPED_TEST(TestDeque, Pop_Front_1) {
+  typedef typename TestFixture::deque_type      deque_type;
+
+  deque_type x(1);
+  ASSERT_EQ(x.size(), 1);
+  x.pop_front();
+  ASSERT_TRUE(x.empty());
+}
+
+TYPED_TEST(TestDeque, Pop_Front_2) {
+  typedef typename TestFixture::deque_type      deque_type;
+
+  deque_type x(500);
+  ASSERT_EQ(x.size(), 500);
+  for (int i = 0; i < 500; ++i) {
+    x.pop_back();
+  }
+  ASSERT_TRUE(x.empty());
+}
+
+TYPED_TEST(TestDeque, Pop_Front_3) {
+  typedef typename TestFixture::deque_type      deque_type;
+
+  deque_type x(1, 3);
+  ASSERT_EQ(x.size(), 1);
+  x.pop_front();
+  ASSERT_TRUE(x.empty());
+  x.push_back(5);
+  ASSERT_EQ(x.size(), 1);
+  ASSERT_EQ(x[0], 5);
+}
 
 // TODO: Test Deque push_back() 
 

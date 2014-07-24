@@ -799,7 +799,7 @@ class my_deque {
     }
 
     /**
-     * <your documentation>
+     * Return a non-modifiable reference to the last element of this deque. 
      */
     const_reference back () const {
       return const_cast<my_deque*>(this)->back();
@@ -936,10 +936,16 @@ class my_deque {
     }
 
     /**
-     * <your documentation>
+     * Removes the first element of this deque. 
      */
     void pop_front () {
-      // <your code>
+      ++_b_chunk_idx;
+      if (_b_chunk_idx > CHUNK_SIZE) {
+        _b_chunk_idx = 0;
+        ++_b_table_idx;
+      }
+      --_e;
+      --_l;
       assert(valid());
     }
 
