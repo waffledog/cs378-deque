@@ -52,10 +52,10 @@ template <typename A, typename II, typename BI>
 BI uninitialized_copy (A& a, II b, II e, BI x) {
   BI p = x;
   try {
-    cout << "entering copy" << endl;
-    cout << "*b: " << *b << " *e: " << *(--e) << endl;
+    // cout << "entering copy" << endl;
+    // cout << "*b: " << *b << " *e: " << *(--e) << endl;
     while (b != e) {
-      cout << "&*x: " << &*x << " *b: " << *b << endl;
+      // cout << "&*x: " << &*x << " *b: " << *b << endl;
       a.construct(&*x, *b);
       ++b;
       ++x;
@@ -334,7 +334,7 @@ class my_deque {
         // ----
         // data
         // ----
-        const my_deque* const _d; //! Pointer to the deque over we're iterating 
+        my_deque* _d; //! Pointer to the deque over we're iterating 
         size_type _idx;           //! Indexing into chunk table
 
       private:
@@ -531,8 +531,9 @@ class my_deque {
      */
     friend bool operator < (const my_deque& lhs, const my_deque& rhs) {
       // <your code>
+      return std::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
       // you must use std::lexicographical_compare()
-      return true;
+      // return true;
     }
 
   private:
@@ -920,10 +921,17 @@ class my_deque {
     /**
      * <your documentation>
      */
-    iterator insert (iterator, const_reference) {
+    iterator insert (iterator i, const_reference v) {
       // <your code>
-      assert(valid());
-      return iterator();
+      resize(size() + 1); 
+      iterator e = end();
+      while(--e != i) {
+        *e = *(e - 1);
+      }
+      *i = v; 
+      assert(valid()); 
+      return i;
+      // return iterator();
     }
 
     // ---
@@ -975,8 +983,29 @@ class my_deque {
     /**
      * <your documentation>
      */
-    void push_front (const_reference) {
+    void push_front (const_reference v) {
       // <your code>
+      if(_b_table_idx == 0 && _b_chunk_idx == 0) {
+        T** tmp = _table_p;
+        _table_p = _table_a.allocate(size() + 1);
+        _table_size++;
+        uninitialized_fill(_table_a, _table_p, _table_p + _table_size, pointer());
+        std::copy(tmp, tmp + _table_size - 1, _table_p + 1);
+        pointer _chunk_p = _chunk_a.allocate(CHUNK_SIZE);
+        uninitialized_fill(_chunk_a, _chunk_p, _chunk_p + CHUNK_SIZE, value_type());
+        _table_p[0] = _chunk_p;
+        _b_table_idx = 0;
+        _b_chunk_idx = CHUNK_SIZE - 1;
+      }
+      else {
+        if(--_b_chunk_idx < 0) {
+          --_b_table_idx;
+          _b_chunk_idx = CHUNK_SIZE - 1;
+        } 
+      }
+      ++_e;
+      ++_l;
+      *_b = v; 
       assert(valid());
     }
 
