@@ -143,7 +143,6 @@ class my_deque {
         // -----
 
         bool valid () const {
-          // <your code>
           return true;
         }
 
@@ -362,8 +361,7 @@ class my_deque {
         // -----
 
         bool valid () const {
-          // <your code>
-          return true;
+          return _d->valid();
         }
 
       public:
