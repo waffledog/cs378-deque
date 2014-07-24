@@ -658,50 +658,6 @@ class my_deque {
       _l = iterator(this, _table_size * CHUNK_SIZE);
 
       std::copy(that.begin(), that.end(), begin());
-/*
-      _table_size = (that.size() / CHUNK_SIZE);
-      if((that.size() % CHUNK_SIZE) != 0 || (that.size() == 0)) 
-        _table_size++;
-      _table_p = _table_a.allocate(_table_size);
-      uninitialized_fill(_table_a, _table_p, _table_p + _table_size, pointer());
-      size_type idx = 0;
-      size_type i = 0;
-      while(idx < that.size()) {
-        if(idx + CHUNK_SIZE - 1 <= that.size()) {
-          cout << "here" << endl;
-          pointer _chunk_p = _chunk_a.allocate(CHUNK_SIZE);
-          cout << "that begin: " << *that.begin() + idx << endl;
-          cout << "that begin: " << *that.begin() + idx + CHUNK_SIZE << endl;
-          uninitialized_copy(_chunk_a, that.begin() + idx, that.begin() + idx + CHUNK_SIZE, _chunk_p);
-          // std::copy(that.begin() + i, that.begin() + CHUNK_SIZE, _chunk_p);
-          // iterator b = that.begin();
-          // std::copy(tmp, tmp + _table_size, _table_p);
-          // uninitialized_copy(_chunk_a, _chunk_p, _chunk_p + CHUNK_SIZE, that.begin() + idx);
-          // uninitialized_copy(_chunk_a, b, b + CHUNK_SIZE, _chunk_p);
-          cout << "_chunk_p[i]: " << _chunk_p[0] << endl;
-          _table_p[i] = _chunk_p;
-          idx += CHUNK_SIZE;
-          i++;
-        }
-        else {
-          cout << "else here" << endl;
-          size_type idx_r = that.size() / CHUNK_SIZE;
-          pointer _chunk_p = _chunk_a.allocate(idx_r);
-          uninitialized_copy(_chunk_a, that.begin() + idx, that.begin() + idx + idx_r, _chunk_p);
-          idx += idx_r;
-        }
-      }
-
-
-      _b_table_idx = 0;
-      _b_chunk_idx = 0;
-
-      _b = iterator(this, 0);
-      _e = iterator(this, that.size());
-      _l = iterator(this, that.size() + 1);
-
-      // uninitialized_copy(_chunk_a, that.begin(), that.end(), begin());
-*/
       assert(valid());
     }
 
@@ -710,7 +666,7 @@ class my_deque {
     // ----------
 
     /**
-     * <your documentation>
+     * Deque destructor. Frees all allocated memory. 
      */
     ~my_deque () {
       // Destroy and Deallocate every chunk
@@ -736,10 +692,38 @@ class my_deque {
     // ----------
 
     /**
-     * <your documentation>
+     * Copy Assignment. Make this deque identical to the given deque. 
      */
     my_deque& operator = (const my_deque& rhs) {
-      // <your code>
+
+      // CASE I: This is That
+      if (this == &rhs) {
+        return *this;
+      }
+
+      // CASE II: This is same size as rhs
+      if (size() == rhs.size()) {
+        std::copy(rhs.begin(), rhs.end(), begin());
+      }
+
+      // CASE III: Everything Else
+      else {
+        resize(rhs.size());  
+        std::copy(rhs.begin(), rhs.end(), begin());
+      } 
+
+      /*
+      // CASE III: Rhs is smaller than this
+      else if (size() > rhs.size()) {
+        resize(rhs.size());
+        std::copy(rhs.begin(), rhs.end(), begin());
+      }
+    
+      // CASE IV: Rhs is bigger than this, but no allocation needed
+      else if (rhs.size() <= capacity()) {
+      }
+      */
+
       assert(valid());
       return *this;
     }

@@ -218,6 +218,60 @@ TYPED_TEST(TestDeque, Constructor_2) {
   deque_type x(56);
 }
 
+TYPED_TEST(TestDeque, CopyAssign_1) {
+  typedef typename TestFixture::deque_type      deque_type;
+  typedef typename TestFixture::value_type      value_type;
+
+  const value_type& v1 = 1;
+  const value_type& v2 = 2;
+  const deque_type x(10, v1);
+  deque_type y(20, v2);
+  ASSERT_EQ(x.size(), 10);
+  ASSERT_EQ(y.size(), 20);
+  ASSERT_NE(x, y);
+  y = x;
+  ASSERT_EQ(x.size(), 10);
+  ASSERT_EQ(y.size(), 10);
+  ASSERT_EQ(x, y);
+  ASSERT_EQ(x[0], 1);
+}
+
+TYPED_TEST(TestDeque, CopyAssign_2) {
+  typedef typename TestFixture::deque_type      deque_type;
+  typedef typename TestFixture::value_type      value_type;
+
+  const value_type& v1 = 1;
+  const value_type& v2 = 2;
+  deque_type x(10, v1);
+  const deque_type y(20, v2);
+  ASSERT_EQ(x.size(), 10);
+  ASSERT_EQ(y.size(), 20);
+  ASSERT_NE(x, y);
+  x = y;
+  ASSERT_EQ(x.size(), 20);
+  ASSERT_EQ(y.size(), 20);
+  ASSERT_EQ(x, y);
+  ASSERT_EQ(x[0], 2);
+}
+
+TYPED_TEST(TestDeque, CopyAssign_3) {
+  typedef typename TestFixture::deque_type      deque_type;
+  typedef typename TestFixture::value_type      value_type;
+
+  const value_type& v1 = 1;
+  const value_type& v2 = 2;
+  deque_type x(15, v1);
+  const deque_type y(16, v2);
+  ASSERT_EQ(x.size(), 15);
+  ASSERT_EQ(y.size(), 16);
+  ASSERT_NE(x, y);
+  x = y;
+  ASSERT_EQ(x.size(), 16);
+  ASSERT_EQ(y.size(), 16);
+  ASSERT_EQ(x, y);
+  ASSERT_EQ(x[0], 2);
+}
+
 TYPED_TEST(TestDeque, Subscript_1) {
   typedef typename TestFixture::deque_type      deque_type;
   typedef typename TestFixture::allocator_type  allocator_type;
