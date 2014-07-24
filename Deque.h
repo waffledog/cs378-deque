@@ -828,10 +828,10 @@ class my_deque {
     // -----
 
     /**
-     * <your documentation>
+     * Remove all elements from this deque. 
      */
     void clear () {
-      // <your code>
+      resize(0);
       assert(valid());
     }
 
