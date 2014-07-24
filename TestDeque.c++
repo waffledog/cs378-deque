@@ -513,7 +513,25 @@ TYPED_TEST(TestDeque, Back_2) {
   ASSERT_EQ(x.back(), 100);
 }
 
-// TODO: Test Deque const_reference back() 
+TYPED_TEST(TestDeque, Const_Back_1) {
+  typedef typename TestFixture::deque_type      deque_type;
+  typedef typename TestFixture::allocator_type  allocator_type;
+  typedef typename TestFixture::value_type      value_type;
+  typedef typename TestFixture::size_type       size_type;
+  typedef typename TestFixture::difference_type difference_type;
+  typedef typename TestFixture::pointer         pointer;
+  typedef typename TestFixture::const_pointer   const_pointer;
+  typedef typename TestFixture::reference       reference;
+  typedef typename TestFixture::const_reference const_reference;
+
+  deque_type x(30);
+  x[29] = 99;
+  const deque_type y = x;
+
+  const_reference b = y.back();
+  ASSERT_EQ(b, 99);
+  ASSERT_EQ(&b, &y[29]);
+}
 
 // TODO: Test Deque clear() 
 
@@ -689,7 +707,47 @@ TYPED_TEST(TestDeque, Pop_Front_3) {
   ASSERT_EQ(x[0], 5);
 }
 
-// TODO: Test Deque swap() 
+TYPED_TEST(TestDeque, Swap_1) {
+  typedef typename TestFixture::deque_type      deque_type;
+
+  deque_type x(20, 1);
+  deque_type y(35, 2);
+  const deque_type x_copy(x);
+  const deque_type y_copy(y);
+
+  x.swap(y);
+
+  ASSERT_EQ(y, x_copy);
+  ASSERT_EQ(x, y_copy);
+}
+
+TYPED_TEST(TestDeque, Swap_2) {
+  typedef typename TestFixture::deque_type      deque_type;
+
+  deque_type x;
+  deque_type y(35, 2);
+  const deque_type x_copy(x);
+  const deque_type y_copy(y);
+
+  x.swap(y);
+
+  ASSERT_EQ(y, x_copy);
+  ASSERT_EQ(x, y_copy);
+}
+
+TYPED_TEST(TestDeque, Swap_3) {
+  typedef typename TestFixture::deque_type      deque_type;
+
+  deque_type x;
+  deque_type y;
+  const deque_type x_copy(x);
+  const deque_type y_copy(y);
+
+  x.swap(y);
+
+  ASSERT_EQ(y, x_copy);
+  ASSERT_EQ(x, y_copy);
+}
 
 /*----------------------------------------------------------------------------*\
     ITERATOR CLASS TESTS
