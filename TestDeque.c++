@@ -402,6 +402,54 @@ TYPED_TEST(TestDeque, Back_2) {
 
 // TODO: Test Deque const_iterator end() 
 
+TYPED_TEST(TestDeque, Front_1) {
+  typedef typename TestFixture::deque_type      deque_type;
+  typedef typename TestFixture::reference       reference;
+  typedef typename TestFixture::const_reference const_reference;
+  
+  deque_type x(5, 7);
+  ASSERT_EQ(x.front(), 7);
+  ASSERT_EQ(&x.front(), &x[0]);
+}
+
+TYPED_TEST(TestDeque, Front_2) {
+  typedef typename TestFixture::deque_type      deque_type;
+  typedef typename TestFixture::reference       reference;
+  typedef typename TestFixture::const_reference const_reference;
+  
+  deque_type x(15, 1);
+  reference r = x.front();
+  ASSERT_EQ(r, 1);
+  r = 20;
+  ASSERT_EQ(x.front(), 20);
+}
+
+TYPED_TEST(TestDeque, Front_3) {
+  typedef typename TestFixture::deque_type      deque_type;
+  typedef typename TestFixture::reference       reference;
+  typedef typename TestFixture::const_reference const_reference;
+  
+  deque_type x(15, 1);
+  x[0] = 20;
+  ASSERT_EQ(x.front(), 20);
+  x.pop_back();
+  x.pop_back();
+  x.push_back(3);
+  ASSERT_EQ(x.front(), 20);
+  x.pop_front();
+  ASSERT_EQ(x.front(), 1);
+}
+
+TYPED_TEST(TestDeque, Front_4) {
+  typedef typename TestFixture::deque_type      deque_type;
+  typedef typename TestFixture::reference       reference;
+  typedef typename TestFixture::const_reference const_reference;
+  
+  const deque_type x(15, 1);
+  const_reference cr = x.front();
+  ASSERT_EQ(cr, 1);
+}
+
 TYPED_TEST(TestDeque, Erase_1) {
   typedef typename TestFixture::deque_type      deque_type;
   typedef typename TestFixture::allocator_type  allocator_type;

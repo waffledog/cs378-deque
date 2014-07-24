@@ -886,17 +886,15 @@ class my_deque {
     // -----
 
     /**
-     * <your documentation>
+     * Returns a reference to the first element in the deque. 
      */
     reference front () {
-      // <your code>
-      // dummy is just to be able to compile the skeleton, remove it
-      static value_type dummy;
-      return dummy;
+      assert(!empty());
+      return *begin();
     }
 
     /**
-     * <your documentation>
+     * Returns a non-modifiable reference to the first element in the deque. 
      */
     const_reference front () const {
       return const_cast<my_deque*>(this)->front();
