@@ -608,12 +608,12 @@ class my_deque {
     bool valid () const {
       bool v = (!_b._idx && !_e._idx && !_l._idx) || 
                ((_b._idx <= _e._idx) && (_e._idx <= _l._idx));
-      if (!v) {
-        cout << "Invalid Deque: " << endl;
-        cout << "\t_b._idx: " << _b._idx << endl;
-        cout << "\t_e._idx: " << _e._idx << endl;
-        cout << "\t_l._idx: " << _l._idx << endl;
-      }
+      // if (!v) {
+      //   cout << "Invalid Deque: " << endl;
+      //   cout << "\t_b._idx: " << _b._idx << endl;
+      //   cout << "\t_e._idx: " << _e._idx << endl;
+      //   cout << "\t_l._idx: " << _l._idx << endl;
+      // }
       return v;
     }
 
@@ -640,9 +640,6 @@ class my_deque {
      */
     explicit my_deque (size_type s, const_reference v = value_type(), 
                        const allocator_type& a = allocator_type()) {
-      //cout << "Entering my_deque constructor" << endl;
-      //cout << "s: " << s << endl;
-
       // Create chunk table
       _table_size = (s / CHUNK_SIZE);
       if((s % CHUNK_SIZE) != 0)
@@ -653,7 +650,6 @@ class my_deque {
 
       // Allocate chunks and map them into the table
       for (size_type i = 0; i < _table_size; ++ i) {
-        //cout << "allocating chunk " << i << endl;
         pointer _chunk_p = _chunk_a.allocate(CHUNK_SIZE);
         uninitialized_fill(_chunk_a, _chunk_p, _chunk_p + CHUNK_SIZE, v);
         _table_p[i] = _chunk_p;
@@ -674,18 +670,14 @@ class my_deque {
      * @param that The deque instance to copy 
      */
     my_deque (const my_deque& that) : _chunk_a(that._chunk_a) {
-      cout << "copy" << endl;
-
       _table_size = (that.size() / CHUNK_SIZE);
       if((that.size() % CHUNK_SIZE) != 0)
         _table_size += 1;
-      //cout << "_table_size: " << _table_size << endl;
       _table_p = _table_a.allocate(_table_size);
       uninitialized_fill(_table_a, _table_p, _table_p + _table_size, pointer());
 
       // Allocate chunks and map them into the table
       for (size_type i = 0; i < _table_size; ++ i) {
-        //cout << "allocating chunk " << i << endl;
         pointer _chunk_p = _chunk_a.allocate(CHUNK_SIZE);
         uninitialized_fill(_chunk_a, _chunk_p, _chunk_p + CHUNK_SIZE, value_type());
         _table_p[i] = _chunk_p;
@@ -1113,17 +1105,15 @@ class my_deque {
         _e = _b + s;
       }
       assert(valid());
-      // printChunkTable();
-      // cout << "Leaving Resize()" << endl;
     }
     
     // TODO: COMMENT OUT AFTER DEV
-    void printChunkTable() {
-      cout << "Chunk table has " << _table_size << " entries: " << endl;
-      for (size_t i = 0; i < _table_size; ++i) {
-        cout << "\t" << i << ": " << _table_p[i] << endl; 
-      }
-    } 
+    // void printChunkTable() {
+    //   cout << "Chunk table has " << _table_size << " entries: " << endl;
+    //   for (size_t i = 0; i < _table_size; ++i) {
+    //     cout << "\t" << i << ": " << _table_p[i] << endl; 
+    //   }
+    // } 
 
       
     // ----
@@ -1148,11 +1138,8 @@ class my_deque {
     void swap (my_deque& that) {
       if(_chunk_a == that._chunk_a) {
          std::swap(_b._idx, that._b._idx);
-         //std::swap(_b._d, that._b._d);
          std::swap(_e._idx, that._e._idx);
-         //std::swap(_e._d, that._e._d);
          std::swap(_l._idx, that._l._idx);
-         //std::swap(_l._d, that._l._d);
         
          std::swap(_table_a, that._table_a);
          std::swap(_b_table_idx, that._b_table_idx);
@@ -1164,14 +1151,9 @@ class my_deque {
          std::swap(_table_p, that._table_p);
          assert(_table_p == p2);
          assert(that._table_p == p1);
-
-         //std::swap(_b, that._b);
-         //std::swap(_e, that._e);
-         //std::swap(_l, that._l);
          assert(begin()._idx == 0);
       }
       else {
-        cout << "else" << endl;
         my_deque x(*this);
         *this = that;
         that = x;
