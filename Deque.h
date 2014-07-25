@@ -837,6 +837,7 @@ class my_deque {
      * Access the last element
      */
     reference back () {
+      assert(!empty());
       typename my_deque::iterator e = (*this).end();
       --e;
       return *e;
@@ -846,6 +847,7 @@ class my_deque {
      * Return a non-modifiable reference to the last element of this deque. 
      */
     const_reference back () const {
+      assert(!empty());
       return const_cast<my_deque*>(this)->back();
     }
 
@@ -857,7 +859,7 @@ class my_deque {
      * Return an iterator to the beginning of this deque.
      */
     iterator begin () {
-      return iterator(_b);
+      return _b;
     }
 
     /**
@@ -898,7 +900,7 @@ class my_deque {
      * Return an iterator to the end of this deque.
      */
     iterator end () {
-      return iterator(_e);
+      return _e;
     }
 
     /**
@@ -1144,43 +1146,37 @@ class my_deque {
      * Does not invoke any move, copy, or swap operations on individual elements.
      */
     void swap (my_deque& that) {
-      // if(_chunk_a == that._chunk_a) {
-      //   std::swap(_table_a, that._table_a);
-      //   std::swap(_table_p, that._table_p);
-      //   std::swap(_table_size, that._table_size);
-      //   // std::swap(size(), that.size());
-      //   std::swap(_b_table_idx, that._b_table_idx);
-      //   std::swap(_b_chunk_idx, that._b_chunk_idx);
-      //   std::swap(_b._idx, that._b._idx);
-      //   std::swap(_b._d, that._b._d);
-      //   std::swap(_e._idx, that._e._idx);
-      //   std::swap(_e._d, that._e._d);
-      //   std::swap(_l._idx, that._l._idx);
-      //   std::swap(_l._d, that._l._d);
+      if(_chunk_a == that._chunk_a) {
+         std::swap(_b._idx, that._b._idx);
+         //std::swap(_b._d, that._b._d);
+         std::swap(_e._idx, that._e._idx);
+         //std::swap(_e._d, that._e._d);
+         std::swap(_l._idx, that._l._idx);
+         //std::swap(_l._d, that._l._d);
         
+         std::swap(_table_a, that._table_a);
+         std::swap(_b_table_idx, that._b_table_idx);
+         std::swap(_b_chunk_idx, that._b_chunk_idx);
+         std::swap(_table_size, that._table_size);
 
-      //   // std::swap(_table_size, that._table_size);
-      //   // std::swap(_table_p, that._table_p);
-      //   // std::swap(_b, that._b);
-      //   // std::swap(_e, that._e);
-      //   // std::swap(_l, that._l);
-        
-      // }
-      // else {
-      //   cout << "else" << endl;
+         T** p1 = _table_p;
+         T** p2 = that._table_p;
+         std::swap(_table_p, that._table_p);
+         assert(_table_p == p2);
+         assert(that._table_p == p1);
 
-      //   my_deque x(*this);
-      //   *this = that;
-      //   that = x;
-      // }
-      // assert(valid());
-      my_deque tmp(*this);
-      // my_deque tmp;
-      // tmp = *this;
-      *this = that;
-      that = tmp;
+         //std::swap(_b, that._b);
+         //std::swap(_e, that._e);
+         //std::swap(_l, that._l);
+         assert(begin()._idx == 0);
+      }
+      else {
+        cout << "else" << endl;
+        my_deque x(*this);
+        *this = that;
+        that = x;
+      }
       assert(valid());
-  //   }
   }
 };
 
