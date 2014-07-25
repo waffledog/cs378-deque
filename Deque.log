@@ -1,0 +1,410 @@
+commit 2cec2e5d99190d0e4f05cc524957c8f6586c226b
+Author: Yun Wen Chen <dianachen@utexas.edu>
+Date:   Thu Jul 24 20:25:32 2014 -0500
+
+    unit test results
+
+commit 556ad2cc0c709b8c5186e5d36b7f35f60bb5f37f
+Merge: 9fbd9ee 5abb919
+Author: David Ouyang Moench <domoench@gmail.com>
+Date:   Thu Jul 24 20:08:43 2014 -0500
+
+    Merge pull request #32 from waffledog/diana-ops
+    
+    Cleaned up Deque.h
+
+commit 5abb91982cbdd0f05cea82e16cbeb97b1b9c0be0
+Author: Yun Wen Chen <dianachen@utexas.edu>
+Date:   Thu Jul 24 20:06:00 2014 -0500
+
+    cleaned up Deque.h
+
+commit 5a6f32acbad4b423eb6acfbd8d8aee7611a2870b
+Merge: e3e544f 9fbd9ee
+Author: Yun Wen Chen <dianachen@utexas.edu>
+Date:   Thu Jul 24 20:00:43 2014 -0500
+
+    Merge branch 'master' of https://github.com/waffledog/cs378-deque into diana-ops
+
+commit e3e544fd100c6f7a63bb2529e28285be168eeb5a
+Author: Yun Wen Chen <dianachen@utexas.edu>
+Date:   Thu Jul 24 19:59:33 2014 -0500
+
+    unit tests
+
+commit 9fbd9ee88129fe86f2aaa688b464c2d82558f603
+Merge: f0e6b83 46b5140
+Author: David Ouyang Moench <domoench@gmail.com>
+Date:   Thu Jul 24 19:44:59 2014 -0500
+
+    Merge pull request #31 from waffledog/david
+    
+    David
+
+commit 46b5140974911360f4d396e8af93ce4d61891138
+Author: David Ouyang Moench <domoench@gmail.com>
+Date:   Thu Jul 24 19:43:24 2014 -0500
+
+    Fixed Swap. Resolves #26.
+
+commit d9e392c26ad7c5d844470286c30f900977e838c8
+Author: David Ouyang Moench <domoench@gmail.com>
+Date:   Thu Jul 24 15:17:05 2014 -0500
+
+    Wrote some stupid validy check for iterators. Revisit if time. #30.
+
+commit 4ebdc68d146ba7d78fdc70e75eb063a2e6b881de
+Author: David Ouyang Moench <domoench@gmail.com>
+Date:   Thu Jul 24 15:02:24 2014 -0500
+
+    Finished all header comments. Resolves #23.
+
+commit b6e519882357c3cb571b485d90d8a12363b9d98f
+Author: David Ouyang Moench <domoench@gmail.com>
+Date:   Thu Jul 24 14:46:57 2014 -0500
+
+    Added header comments for Iterator class. #23.
+
+commit b673757f6b339242f121b799e820b0ad1d33c8a1
+Author: David Ouyang Moench <domoench@gmail.com>
+Date:   Thu Jul 24 14:29:25 2014 -0500
+
+    Fixed memory leak in push_front(). Resolves #29.
+
+commit f0e6b8339926f3ac174f85bca3e0639d758f369f
+Merge: 51b6fba 40c71da
+Author: David Ouyang Moench <domoench@gmail.com>
+Date:   Thu Jul 24 14:07:11 2014 -0500
+
+    Merge pull request #28 from waffledog/diana-ops
+    
+    Diana ops
+
+commit 40c71da3d88885fe5aab73671448573660b5fe1a
+Author: Yun Wen Chen <dianachen@utexas.edu>
+Date:   Thu Jul 24 14:04:32 2014 -0500
+
+    more test, need to revisit Erase_3
+
+commit 8285c2ca1ef0747261ca14876589d8fda920affe
+Author: Yun Wen Chen <dianachen@utexas.edu>
+Date:   Thu Jul 24 13:48:16 2014 -0500
+
+    more test cases, placeholder code for swap
+
+commit 36a960bfdb433be9b15c341101d0048934ee5dc8
+Author: Yun Wen Chen <dianachen@utexas.edu>
+Date:   Thu Jul 24 09:09:56 2014 -0500
+
+    added cassert
+
+commit 3895b8c36b19b11fe13a3bf63123f15c734f19ca
+Author: Yun Wen Chen <dianachen@utexas.edu>
+Date:   Thu Jul 24 09:03:06 2014 -0500
+
+    take a look at equalequal
+
+commit 51b6fba5e1cbbdf75b85a76d2216ac5dbb3719c9
+Merge: 34586c2 749129d
+Author: Yun Wen Chen <dianachen@utexas.edu>
+Date:   Thu Jul 24 03:26:20 2014 -0500
+
+    Merge pull request #27 from waffledog/david
+    
+    David
+
+commit 749129dc4fc180bcbd9f51c5884f7531fbcf8faa
+Author: David Ouyang Moench <domoench@gmail.com>
+Date:   Thu Jul 24 03:21:37 2014 -0500
+
+    Added tests for swap. They don't pass for our deque yet.
+
+commit 17ea98e471be9870aa414e5b02e1715434cefbf3
+Author: David Ouyang Moench <domoench@gmail.com>
+Date:   Thu Jul 24 02:44:08 2014 -0500
+
+    Added a bunch of tests.
+
+commit 35058cd3bc4980a9e072bac9b570f051f5aed20a
+Author: David Ouyang Moench <domoench@gmail.com>
+Date:   Thu Jul 24 02:19:44 2014 -0500
+
+    Implemented and tested front() and const front().
+
+commit 37806b01217b155c7d7978e665982ddb46f25a62
+Author: David Ouyang Moench <domoench@gmail.com>
+Date:   Thu Jul 24 01:32:11 2014 -0500
+
+    Implemented and tested pop_front().
+
+commit 3aadba12d588b2ea4e1d0b9f381af878a76836a4
+Author: David Ouyang Moench <domoench@gmail.com>
+Date:   Thu Jul 24 01:06:48 2014 -0500
+
+    Implemented and tested pop_back().
+
+commit 787e1e934859a8ff2772eeb3fdfced2623777321
+Author: David Ouyang Moench <domoench@gmail.com>
+Date:   Thu Jul 24 00:53:14 2014 -0500
+
+    Implemented and tested erase().
+
+commit 84b18f52f346cad96329eeb2ac1d96214da17a62
+Author: David Ouyang Moench <domoench@gmail.com>
+Date:   Thu Jul 24 00:33:22 2014 -0500
+
+    Implemented and tested clear().
+
+commit 33185a07200980dd96dce77d2976b364a14e3f88
+Author: David Ouyang Moench <domoench@gmail.com>
+Date:   Thu Jul 24 00:25:42 2014 -0500
+
+    Implemented and tested Copy Assignment.
+
+commit 34586c2e9f512579a73b2f0fbc6bbefa8fbffdc0
+Merge: 456ba9f 1c45a95
+Author: David Ouyang Moench <domoench@gmail.com>
+Date:   Wed Jul 23 19:11:59 2014 -0500
+
+    Merge pull request #22 from waffledog/diana-ops
+    
+    push_front, copy constructor, lexicographical compare
+
+commit 1c45a95ae4540a58e919f3da00adab56dc53c570
+Author: Yun Wen Chen <dianachen@utexas.edu>
+Date:   Wed Jul 23 19:09:56 2014 -0500
+
+    push_front, copy constructor, lexicographical compare
+
+commit 456ba9f7e05df5bdf5233a1eab2918d8a47d96d1
+Author: David Ouyang Moench <domoench@gmail.com>
+Date:   Wed Jul 23 16:45:16 2014 -0500
+
+    Implemented copy constructor. All tests passing. No Mem leaks.
+
+commit b0db424be9ca64fe05867a9bc0ef11e01d38f8be
+Merge: 4fc483f b1ed840
+Author: Yun Wen Chen <dianachen@utexas.edu>
+Date:   Wed Jul 23 14:27:20 2014 -0500
+
+    Merge branch 'master' of https://github.com/waffledog/cs378-deque
+
+commit 4fc483f66f67a75a79cf657687bbe16cb4656668
+Author: Yun Wen Chen <dianachen@utexas.edu>
+Date:   Wed Jul 23 14:27:02 2014 -0500
+
+    copy
+
+commit b1ed840ecee0aa0e47861dd52639688141687e04
+Merge: 0e6978a 0716446
+Author: David Ouyang Moench <domoench@gmail.com>
+Date:   Wed Jul 23 08:40:19 2014 -0500
+
+    Merge pull request #21 from waffledog/david-resize
+    
+    Debugged Resize + Sealed Memory Leaks
+
+commit 0716446d31590d2163163f3a3d23ffdde8a5c9e0
+Author: David Ouyang Moench <domoench@gmail.com>
+Date:   Wed Jul 23 02:08:06 2014 -0500
+
+    Implemented Destructor and deleted old chunk table in resize => No memory leaks.
+    
+    Confirmed with Valgrind.
+
+commit 2ee3fd01135febbbedd1d991b2b163465600f64c
+Author: David Ouyang Moench <domoench@gmail.com>
+Date:   Wed Jul 23 01:50:27 2014 -0500
+
+    Implemented and tested a "shrink" resize call. All tests passing.
+
+commit 7288b18d8aa500c12c16a3d00e2b7ab69bf75f84
+Author: David Ouyang Moench <domoench@gmail.com>
+Date:   Wed Jul 23 01:22:46 2014 -0500
+
+    Implemented > 1 chunk resizes. All tests passing baybay!
+
+commit 1b77c70d28cb18fb20f2caf3c85612664533ec6c
+Author: David Ouyang Moench <domoench@gmail.com>
+Date:   Wed Jul 23 00:50:25 2014 -0500
+
+    Added same 4-case structure as vector resize. All tests that can pass do.
+
+commit 03899501b49da73218afdd8e82ac99efc6289f4f
+Author: David Ouyang Moench <domoench@gmail.com>
+Date:   Wed Jul 23 00:36:14 2014 -0500
+
+    Added helper function to visually display chunk_table entries.
+    
+    Also fixed a flaw in my logic for the condition where we add 1 to the
+    calculated table size.
+
+commit e7fd73404cfe540a905b16b54f3d4abfff5cf658
+Author: David Ouyang Moench <domoench@gmail.com>
+Date:   Tue Jul 22 23:30:30 2014 -0500
+
+    Fixed default constructor delegation syntax. More tests passing.
+    
+    Bug description and fix here: https://stackoverflow.com/questions/12190051/member-initialization-while-using-delegated-constructor
+
+commit 0e6978ad50d6a751799cfd2e03fc643ab03faaa8
+Author: David Ouyang Moench <domoench@gmail.com>
+Date:   Tue Jul 22 23:11:16 2014 -0500
+
+    Pushing the changes we worked on this evening.
+
+commit 5cd4b175b3280e33b51848451e72a10f5ec1cc16
+Merge: 9251fe0 f38e002
+Author: Yun Wen Chen <dianachen@utexas.edu>
+Date:   Tue Jul 22 18:19:13 2014 -0500
+
+    Merge branch 'master' of https://github.com/waffledog/cs378-deque
+
+commit f38e002fe2e93a23148099c8835afac369da20df
+Merge: 707b0f6 3d9e04f
+Author: David Ouyang Moench <domoench@gmail.com>
+Date:   Tue Jul 22 18:18:56 2014 -0500
+
+    Merge pull request #20 from waffledog/david-tests
+    
+    Function Implementations + Tests
+
+commit 9251fe065868205ef6493f094a8868293692bd70
+Author: Yun Wen Chen <dianachen@utexas.edu>
+Date:   Tue Jul 22 18:16:45 2014 -0500
+
+    expand
+
+commit 7bffe5fd257252e0f416bea3d12bab51ece08a28
+Author: Yun Wen Chen <dianachen@utexas.edu>
+Date:   Tue Jul 22 14:55:14 2014 -0500
+
+    expansion
+
+commit 3d9e04f22c20524574cf433996e2a1c49ddb98a2
+Author: David Ouyang Moench <domoench@gmail.com>
+Date:   Tue Jul 22 11:05:39 2014 -0500
+
+    Added tests for Deque back().
+
+commit a153e7c868b4583c879c47e9705d3c22098bdbf2
+Author: David Ouyang Moench <domoench@gmail.com>
+Date:   Tue Jul 22 10:44:25 2014 -0500
+
+    Added Deque == operator and tests.
+
+commit d4616e573c472ac089850120cba8e1db3329903c
+Author: David Ouyang Moench <domoench@gmail.com>
+Date:   Tue Jul 22 10:26:13 2014 -0500
+
+    Added test for generic range iteration using !=.
+    
+    Confirmed we can now use the while(b != e) pattern.
+
+commit 0c97e4ab560042cb1b13d9b292550650ff4181f3
+Author: David Ouyang Moench <domoench@gmail.com>
+Date:   Tue Jul 22 09:55:57 2014 -0500
+
+    Added test for Iterator -> operator.
+    
+    Note, I made this test a non-typed test so I could define its elements as
+    structs (not ints/floats) so I could get test the arrow op with element->member.
+
+commit d0db74056b398258f8c897e4323d10ccf7d252cb
+Author: David Ouyang Moench <domoench@gmail.com>
+Date:   Tue Jul 22 09:38:52 2014 -0500
+
+    Added tests for iterator pre and post ++ and -- methods.
+
+commit 18487070172eb323071d58be9673e04317cc0847
+Author: David Ouyang Moench <domoench@gmail.com>
+Date:   Tue Jul 22 09:26:20 2014 -0500
+
+    Implemented iterator ops -= and +=. Added tests.
+
+commit 87841468b69f9e1b42cbcb8a4840d2d8df50f235
+Author: David Ouyang Moench <domoench@gmail.com>
+Date:   Tue Jul 22 09:11:26 2014 -0500
+
+    Re-instated size() method now that we can access iterators' private _idx.
+
+commit dad72c75227b23a71d71c416c97b5b3fb2b84665
+Merge: 81a5098 707b0f6
+Author: David Ouyang Moench <domoench@gmail.com>
+Date:   Tue Jul 22 08:58:50 2014 -0500
+
+    Merge branch 'master' of github.com:waffledog/cs378-deque into david-tests
+
+commit 81a5098620f6e0373253aa3ac1df3b9f195b9e82
+Author: David Ouyang Moench <domoench@gmail.com>
+Date:   Tue Jul 22 08:58:36 2014 -0500
+
+    Added some tests.
+
+commit 707b0f6bff52a7480bc0fa9e1c278956af0a43ff
+Author: Yun Wen Chen <dianachen@utexas.edu>
+Date:   Mon Jul 21 18:53:34 2014 -0500
+
+    Resolves #17
+
+commit 6423e7fbe72d29558c82c5badf38a3d524be1f88
+Merge: 470d169 6280b76
+Author: David Ouyang Moench <domoench@gmail.com>
+Date:   Mon Jul 21 17:26:25 2014 -0500
+
+    Merge pull request #16 from waffledog/david-exp
+    
+    David exp
+
+commit 6280b7626bad8742be9513d1091c10a7c1eb1390
+Author: David Ouyang Moench <domoench@gmail.com>
+Date:   Mon Jul 21 17:23:02 2014 -0500
+
+    Implemented (but have yet to test) subscript operator.
+    
+    * Nailed down our deque/iterator interfaces
+
+commit db14f1a7a323e1c49eec5c808a3ee9c7c7af5718
+Author: David Ouyang Moench <domoench@gmail.com>
+Date:   Fri Jul 18 18:37:24 2014 -0500
+
+    Implemented iterator constructor.
+    
+    * Followed design pattern from the Vector implemetation exercise. See
+    it [HERE](https://github.com/gpdowning/cs378/blob/master/examples/Vector.h)
+
+commit 26f1b176104b7d03b6d8b9b549d133d5a97aa422
+Author: David Ouyang Moench <domoench@gmail.com>
+Date:   Fri Jul 18 17:11:04 2014 -0500
+
+    Implemented constructor we worked out yesterday.
+    
+    * Compiles.
+    * Uses rebind. #1.
+    * Needs testing. I did a basic test where I had it print out the number
+    of chunks (each of 10 elements) it allocated for different deque input
+    sizes. It performed correctly.
+
+commit 4b526f155811672f91e8875adf75b93570a262a4
+Author: David Ouyang Moench <domoench@gmail.com>
+Date:   Fri Jul 18 16:50:50 2014 -0500
+
+    Added some notes on Google Typed Tests.
+
+commit ae8e2f1f7683c405b8b4ff1990d58474244b56d2
+Author: David Ouyang Moench <domoench@gmail.com>
+Date:   Fri Jul 18 16:50:16 2014 -0500
+
+    Added TestDeque executable, and gcov files to .gitignore.
+
+commit 7e16d6c0dca916deecca15a299d7d85231e35ae9
+Author: David Ouyang Moench <domoench@gmail.com>
+Date:   Fri Jul 18 16:44:52 2014 -0500
+
+    Reformatted indentation and brackets to make (slightly) more readable.
+
+commit 470d16909f8bccff2d2ca335f74afecf4c1bfeb2
+Author: Yun Wen Chen <dianachen@utexas.edu>
+Date:   Thu Jul 17 16:09:12 2014 -0500
+
+    first commit
