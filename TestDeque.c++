@@ -1930,7 +1930,7 @@ TYPED_TEST(TestDeque, Iterator_Plus_1) {
   typedef typename TestFixture::const_reference const_reference;
 
   deque_type x;
-  for(size_type i; i < 45; ++i) {
+  for(size_type i = 0; i < 45; ++i) {
     x.push_back(i);
   }
   typename deque_type::iterator b = x.begin();
@@ -1952,7 +1952,7 @@ TYPED_TEST(TestDeque, Iterator_Minus_1) {
   typedef typename TestFixture::const_reference const_reference;
 
   deque_type x;
-  for(size_type i; i < 45; ++i) {
+  for(size_type i = 0; i < 45; ++i) {
     x.push_back(i);
   }
   typename deque_type::iterator e = x.end();
@@ -3204,16 +3204,3 @@ TYPED_TEST(TestDeque, Push_Front_3) {
   x.push_front(2);
   ASSERT_EQ(x[0], 2); 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
