@@ -1,0 +1,1 @@
+Deque.h:32:12: error: ‘std::cout’ has not been declared
